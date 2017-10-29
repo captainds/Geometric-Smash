@@ -18,8 +18,11 @@ public class MainPanel extends BorderPane{
     private final MainMenu menu;
     public MainPanel() {
         this.onStart = (ActionEvent e) -> {
-            
+            setCenter(new GameState());
         };
+        
+        setFocusTraversable(true);
+        requestFocus();
         this.menu = new MainMenu(onStart);
         setCenter(menu);
     }

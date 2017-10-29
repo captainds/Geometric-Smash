@@ -24,7 +24,9 @@ public class GeometricSmash extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        stage.setScene(new Scene(new MainPanel()));
+        MainPanel mp = new MainPanel();
+        Scene scene = new Scene(mp);
+        stage.setScene(scene);
         stage.setMinWidth(800);
         stage.setMinHeight(600);
         stage.setResizable(false);
