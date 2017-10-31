@@ -29,10 +29,10 @@ public class Player extends GameEntity {
 
     private void updateDirection() {
         direction = direction.subtract(direction);
-        boolean left = InputMap.getState(KeyCode.A) == KeyEvent.KEY_PRESSED;
-        boolean right = InputMap.getState(KeyCode.D) == KeyEvent.KEY_PRESSED;
-        boolean up = InputMap.getState(KeyCode.W) == KeyEvent.KEY_PRESSED;
-        boolean down = InputMap.getState(KeyCode.S) == KeyEvent.KEY_PRESSED;
+        boolean left = InputMap.isHeld(KeyCode.A);
+        boolean right = InputMap.isHeld(KeyCode.D);
+        boolean up = InputMap.isHeld(KeyCode.W);
+        boolean down = InputMap.isHeld(KeyCode.S);
         direction = direction.add(left != right ? (left ? -1.0 : 1.0) : 0.0,
                 up != down ? (up ? -1.0 : 1.0) : 0.0);
 

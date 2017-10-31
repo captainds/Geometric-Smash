@@ -26,7 +26,7 @@ public class MainMenu extends GridPane {
     private Button startButton;
     private Button exitButton;
     
-    public MainMenu (EventHandler<ActionEvent> onStart) {
+    public MainMenu () {
         VBox buttonBox = new VBox();
         Text geo = new Text("GEOMETRIC" + System.lineSeparator() + "SMASH");
         Font f = new Font(64);
@@ -39,7 +39,10 @@ public class MainMenu extends GridPane {
         exitButton = new Button("Exit");
         exitButton.setMinSize(80, 50);
         
-        startButton.setOnAction(onStart);
+        startButton.setOnAction((ActionEvent t) -> {
+            this.fireEvent(new GameEvent(GameEvent.START));
+            
+        });
         exitButton.setOnAction((ActionEvent t) -> {
             System.exit(0);
         });
