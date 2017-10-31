@@ -34,11 +34,11 @@ public class MainPanel extends StackPane {
 
         onPause = (GameEvent e) -> {
             if (!gameState.isPaused()) {
-                getChildren().add(new PauseState());
                 gameState.setPaused(true);
+                getChildren().add(new PauseState());
             } else {
-                getChildren().remove(getChildren().size() - 1);
                 gameState.setPaused(false);
+                getChildren().remove(getChildren().size() - 1);
             }
             e.consume();
         };

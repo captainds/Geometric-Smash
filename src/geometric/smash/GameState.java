@@ -48,6 +48,12 @@ public class GameState extends Pane {
             double startTime = System.nanoTime();
 
             @Override
+            public void start() {
+                startTime = System.nanoTime();
+                super.start();
+            }
+
+            @Override
             public void handle(long curTime) {
                 double cT = curTime;
                 InputMap.processInputs();

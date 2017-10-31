@@ -22,7 +22,6 @@ import javafx.scene.text.Text;
 public class PauseState extends BorderPane {
 
     public PauseState() {
-        System.out.println("PAUSE");
         Text pText = new Text("PAUSED");
         pText.setFont(new Font(64));
         pText.setFill(Color.WHITE);
@@ -31,7 +30,7 @@ public class PauseState extends BorderPane {
         new AnimationTimer() {
             @Override
             public void handle(long l) {
-
+                InputMap.processInputs();
                 if (InputMap.isReleased(KeyCode.P)) {
                     fireEvent(new GameEvent(GameEvent.PAUSE));
                     stop();

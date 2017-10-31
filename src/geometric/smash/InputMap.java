@@ -6,6 +6,7 @@
 package geometric.smash;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
@@ -44,34 +45,42 @@ public class InputMap {
         return INPUT_MAP.get(kc) == KeyAction.HELD;
     }
 
+    public static boolean isPressedOrHeld(KeyCode kc) {
+        return isHeld(kc) || isPressed(kc);
+    }
+
     public static EventHandler<KeyEvent> getHandler() {
         return HANDLER;
     }
 
     public static void processInputs() {
-        INPUTS.forEach((KeyCode kc, EventType<KeyEvent> et) -> {
+
+        Iterator<KeyCode> it = INPUTS.keySet().iterator();
+        while (it.hasNext()) {
+            KeyCode kc = it.next();
+            EventType<KeyEvent> et = INPUTS.get(kc);
             switch (INPUT_MAP.getOrDefault(kc, KeyAction.NONE)) {
                 case NONE:
                     if (et == KeyEvent.KEY_PRESSED) {
                         INPUT_MAP.put(kc, KeyAction.PRESSED);
                     }
+                    it.remove();
                     break;
                 case PRESSED:
                 case HELD:
                     if (et == KeyEvent.KEY_PRESSED) {
                         INPUT_MAP.put(kc, KeyAction.HELD);
-                    } else if (et == KeyEvent.KEY_RELEASED) {
+                    } else {
                         INPUT_MAP.put(kc, KeyAction.RELEASED);
                     }
                     break;
                 case RELEASED:
+                    INPUT_MAP.put(kc, et == KeyEvent.KEY_PRESSED ? KeyAction.PRESSED : KeyAction.NONE);
 
-                    INPUT_MAP.put(kc, KeyAction.NONE);
                     break;
             }
-            System.out.println(kc + " = " + et.getName() + ", " + INPUT_MAP.get(kc));
-        });
-        INPUTS.clear();
+
+        }
     }
 
 }
