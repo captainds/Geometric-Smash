@@ -6,6 +6,9 @@
 package geometric.smash;
 
 import java.util.ArrayList;
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.shape.Shape;
 
@@ -13,12 +16,19 @@ import javafx.scene.shape.Shape;
  *
  * @author Corithian
  */
-public abstract class GameEntity extends Group{
-    protected final ArrayList<Shape> shapes;
-    
+public abstract class GameEntity extends Group {
+
+    protected final ObservableList<Shape> shapes;
+
     public GameEntity() {
-        shapes = new ArrayList<>();
+        shapes = FXCollections.observableArrayList();
+        shapes.addListener((ListChangeListener.Change<? extends Shape> c) -> {
+            while (c.next()) {
+                getChildren().removeAll(c.getRemoved());
+                getChildren().addAll(c.getAddedSubList());
+            }
+        });
     }
-    
+
     public abstract void update(double dt);
 }

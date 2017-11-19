@@ -5,9 +5,10 @@
  */
 package geometric.smash;
 
+import geometric.smash.property.DoubleModifier;
+import geometric.smash.property.Property;
 import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
@@ -17,23 +18,22 @@ import javafx.scene.shape.Rectangle;
  */
 public class Player extends GameEntity {
 
-    private double speed = 150.0;
+    private final Property<Double> speed = new Property<>(150.0);
+    private DoubleModifier.Divider focusSpeed = new DoubleModifier.Divider(1.5);
     private Point2D direction;
 
     public Player() {
-        this.direction = new Point2D(0.0, 0.0);
+        this.direction = Point2D.ZERO;
         shapes.add(new Rectangle(20, 20));
         shapes.get(0).setFill(Color.BLUE);
-        getChildren().addAll(shapes);
     }
 
     private void updateDirection() {
-        direction = direction.subtract(direction);
         boolean left = InputMap.isPressedOrHeld(KeyCode.A);
         boolean right = InputMap.isPressedOrHeld(KeyCode.D);
         boolean up = InputMap.isPressedOrHeld(KeyCode.W);
         boolean down = InputMap.isPressedOrHeld(KeyCode.S);
-        direction = direction.add(left != right ? (left ? -1.0 : 1.0) : 0.0,
+        direction = Point2D.ZERO.add(left != right ? (left ? -1.0 : 1.0) : 0.0,
                 up != down ? (up ? -1.0 : 1.0) : 0.0);
 
     }
@@ -41,7 +41,10 @@ public class Player extends GameEntity {
     @Override
     public void update(double dt) {
         updateDirection();
-        Point2D velocity = direction.multiply(speed * dt);
+        boolean focused = InputMap.isPressedOrHeld(KeyCode.SHIFT);
+        if (focused) speed.addModifier(0, focusSpeed);
+        else speed.removeModifier(0, focusSpeed);
+        Point2D velocity = direction.multiply(speed.getValue() * dt);
         this.setTranslateX(this.getTranslateX() + velocity.getX());
         this.setTranslateY(this.getTranslateY() + velocity.getY());
 

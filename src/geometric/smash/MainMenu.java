@@ -23,8 +23,8 @@ import javafx.scene.transform.Shear;
  * @author Corithian
  */
 public class MainMenu extends GridPane {
-    private Button startButton;
-    private Button exitButton;
+    private final Button startButton;
+    private final Button exitButton;
     
     public MainMenu () {
         VBox buttonBox = new VBox();
@@ -46,8 +46,6 @@ public class MainMenu extends GridPane {
         exitButton.setOnAction((ActionEvent t) -> {
             System.exit(0);
         });
-        
-      
         
         buttonBox.setAlignment(Pos.BOTTOM_LEFT);
         

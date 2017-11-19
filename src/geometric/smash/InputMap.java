@@ -28,7 +28,7 @@ public class InputMap {
 
     private static final EventHandler<KeyEvent> HANDLER = (KeyEvent ke) -> {
         ke.consume();
-        System.out.println(ke);
+        //System.out.println(ke);
         INPUTS.put(ke.getCode(), ke.getEventType());
 
     };
