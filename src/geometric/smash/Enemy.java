@@ -14,29 +14,20 @@ import javafx.geometry.Point2D;
  */
 public class Enemy extends GameEntity {
 
-    public enum Mode {
-        IDLE,
-        CLOSE,
-        FAR,
-        FLEE,
-        GUARD
-
-    }
-
-    protected Mode mode = Mode.IDLE;
-
-    protected double[] modeWeights = new double[5];
-    
     private Player player;
-    
-    
+
     private final Property<Double> speed = new Property<>(0.0);
 
     private Point2D direction = Point2D.ZERO;
+    
+    private EnemyBehavior behavior;
 
     @Override
     public void update(double dt) {
-        
+        behavior.apply();
+        Point2D velocity = direction.multiply(speed.getValue() * dt);
+        this.setTranslateX(this.getTranslateX() + velocity.getX());
+        this.setTranslateY(this.getTranslateY() + velocity.getY());
     }
 
 }

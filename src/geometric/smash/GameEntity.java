@@ -19,6 +19,8 @@ import javafx.scene.shape.Shape;
 public abstract class GameEntity extends Group {
 
     protected final ObservableList<Shape> shapes;
+    
+    protected final ArrayList<Shape> colliders;
 
     public GameEntity() {
         shapes = FXCollections.observableArrayList();
@@ -28,6 +30,7 @@ public abstract class GameEntity extends Group {
                 getChildren().addAll(c.getAddedSubList());
             }
         });
+        colliders = new ArrayList<>();
     }
 
     public abstract void update(double dt);

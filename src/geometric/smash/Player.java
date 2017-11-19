@@ -10,6 +10,7 @@ import geometric.smash.property.Property;
 import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
 /**
@@ -21,11 +22,20 @@ public class Player extends GameEntity {
     private final Property<Double> speed = new Property<>(150.0);
     private DoubleModifier.Divider focusSpeed = new DoubleModifier.Divider(1.5);
     private Point2D direction;
+    
+    private Weapon weapon;
 
     public Player() {
         this.direction = Point2D.ZERO;
         shapes.add(new Rectangle(20, 20));
         shapes.get(0).setFill(Color.BLUE);
+        Circle coll = new Circle(1);
+        shapes.add(coll);
+        colliders.add(coll);
+        
+        coll.setFill(((Color)shapes.get(0).getFill()).invert());
+        coll.setCenterX(10.5);
+        coll.setCenterY(10.5);
     }
 
     private void updateDirection() {
