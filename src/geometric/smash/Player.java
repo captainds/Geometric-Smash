@@ -7,8 +7,10 @@ package geometric.smash;
 
 import geometric.smash.property.DoubleModifier;
 import geometric.smash.property.Property;
+import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
@@ -57,6 +59,20 @@ public class Player extends GameEntity {
         Point2D velocity = direction.multiply(speed.getValue() * dt);
         this.setTranslateX(this.getTranslateX() + velocity.getX());
         this.setTranslateY(this.getTranslateY() + velocity.getY());
+        Bounds pBounds = getBoundsInParent();
+        Bounds bounds = new Rectangle(0, 0, 800, 600).getBoundsInLocal();
+        System.out.println(pBounds);
+        System.out.println(bounds);
+        if (pBounds.getMinX() < bounds.getMinX()) {
+            this.setTranslateX( this.getTranslateX() + bounds.getMinX() - pBounds.getMinX());
+        } else if (pBounds.getMaxX() > bounds.getMaxX()) {
+            this.setTranslateX(this.getTranslateX() + bounds.getMaxX() - pBounds.getMaxX());
+        }
+        if (pBounds.getMinY() < bounds.getMinY()) {
+            this.setTranslateY(this.getTranslateY() + bounds.getMinY() - pBounds.getMinY());
+        } else if (pBounds.getMaxY() > bounds.getMaxY()) {
+            this.setTranslateY(this.getTranslateY() + bounds.getMaxY() - pBounds.getMaxY());
+        }
 
     }
 

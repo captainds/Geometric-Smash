@@ -9,7 +9,9 @@ import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.geometry.Bounds;
 import javafx.scene.Group;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
 /**
@@ -21,7 +23,7 @@ public abstract class GameEntity extends Group {
     protected final ObservableList<Shape> shapes;
     
     protected final ArrayList<Shape> colliders;
-
+    
     public GameEntity() {
         shapes = FXCollections.observableArrayList();
         shapes.addListener((ListChangeListener.Change<? extends Shape> c) -> {

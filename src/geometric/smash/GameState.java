@@ -9,6 +9,9 @@ import java.time.Instant;
 import java.util.ArrayList;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
@@ -20,16 +23,29 @@ import javafx.scene.layout.Pane;
 public class GameState extends Pane {
 
     private final Player player;
-    private ArrayList<GameEntity> gameEntities;
+    private ObservableList<GameEntity> gameEntities;
+    private ArrayList<GameEntity> toAdd;
+    private ArrayList<GameEntity> toRemove;
     private final AnimationTimer gameLoop;
     private boolean paused;
 
     public GameState() {
+        this.setStyle("-fx-background-color: black");
+        setMinSize(800, 600);
+        setPrefSize(800, 600);
+        setMaxSize(800, 600);
         this.paused = true;
         this.player = new Player();
-        gameEntities = new ArrayList<>();
+        gameEntities = FXCollections.observableArrayList();
+        gameEntities.addListener((ListChangeListener.Change<? extends GameEntity> e) -> {
+            while (e.next()) {
+                getChildren().removeAll(e.getRemoved());
+                getChildren().addAll(e.getAddedSubList());
+            }
+        });
+        toAdd = new ArrayList<>();
+        toRemove = new ArrayList<>();
         gameEntities.add(player);
-        getChildren().add(player);
         Platform.runLater(() -> {
             player.setTranslateX(this.getWidth() / 2.0);
             player.setTranslateY(this.getHeight() / 2.0);
@@ -39,6 +55,12 @@ public class GameState extends Pane {
         requestFocus();
         addEventHandler(KeyEvent.KEY_PRESSED, InputMap.getHandler());
         addEventHandler(KeyEvent.KEY_RELEASED, InputMap.getHandler());
+        addEventHandler(GameEvent.ADD, (GameEvent e) -> {
+            addEntity(e.getEntity());
+        });
+        addEventHandler(GameEvent.REMOVE, (GameEvent e) -> {
+            removeEntity(e.getEntity());
+        });
 
         gameLoop = new AnimationTimer() {
             boolean running = true;
@@ -63,6 +85,10 @@ public class GameState extends Pane {
                         entity.update(dt);
 
                     });
+                    gameEntities.removeAll(toRemove);
+                    gameEntities.addAll(toAdd);
+                    toAdd.clear();
+                    toRemove.clear();
 
                     if (InputMap.isReleased(KeyCode.P)) {
                         fireEvent(new GameEvent(GameEvent.PAUSE));
@@ -76,6 +102,7 @@ public class GameState extends Pane {
     public void setPaused(boolean paused) {
         if (this.paused == paused) {
             return;
+
         }
         if (paused) {
             gameLoop.stop();
@@ -87,5 +114,13 @@ public class GameState extends Pane {
 
     public boolean isPaused() {
         return paused;
+    }
+
+    public void addEntity(GameEntity e) {
+        toAdd.add(e);
+    }
+
+    public void removeEntity(GameEntity e) {
+        toRemove.add(e);
     }
 }

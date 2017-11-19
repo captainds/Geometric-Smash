@@ -29,10 +29,6 @@ public class GeometricSmash extends Application {
         MainPanel mp = new MainPanel();
         Scene scene = new Scene(mp);
         stage.setScene(scene);
-        stage.setMinWidth(800.0);
-        stage.setMinHeight(600.0);
-        stage.setMaxWidth(800.0);
-        stage.setMaxHeight(600.0);
         stage.setResizable(false);
        
         stage.show();
