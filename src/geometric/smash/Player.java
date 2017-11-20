@@ -21,13 +21,12 @@ import javafx.scene.shape.Rectangle;
  */
 public class Player extends GameEntity {
 
-    private final Property<Double> speed = new Property<>(150.0);
     private DoubleModifier.Divider focusSpeed = new DoubleModifier.Divider(1.5);
-    private Point2D direction;
     
     private Weapon weapon;
 
     public Player() {
+        this.speed.setBaseValue(150.0);
         this.direction = Point2D.ZERO;
         shapes.add(new Rectangle(20, 20));
         shapes.get(0).setFill(Color.BLUE);
@@ -61,8 +60,7 @@ public class Player extends GameEntity {
         this.setTranslateY(this.getTranslateY() + velocity.getY());
         Bounds pBounds = getBoundsInParent();
         Bounds bounds = new Rectangle(0, 0, 800, 600).getBoundsInLocal();
-        System.out.println(pBounds);
-        System.out.println(bounds);
+        
         if (pBounds.getMinX() < bounds.getMinX()) {
             this.setTranslateX( this.getTranslateX() + bounds.getMinX() - pBounds.getMinX());
         } else if (pBounds.getMaxX() > bounds.getMaxX()) {

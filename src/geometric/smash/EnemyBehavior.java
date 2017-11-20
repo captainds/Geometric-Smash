@@ -10,5 +10,6 @@ package geometric.smash;
  * @author AceForce
  */
 public interface EnemyBehavior {
-    public void apply();
+    public void apply(Player player, double dt);
+    public void cleanup(Enemy enemy);
 }

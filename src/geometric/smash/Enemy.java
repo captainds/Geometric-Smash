@@ -5,7 +5,6 @@
  */
 package geometric.smash;
 
-import geometric.smash.property.Property;
 import javafx.geometry.Point2D;
 
 /**
@@ -14,20 +13,33 @@ import javafx.geometry.Point2D;
  */
 public class Enemy extends GameEntity {
 
-    private Player player;
+    public Player player;
 
-    private final Property<Double> speed = new Property<>(0.0);
-
-    private Point2D direction = Point2D.ZERO;
-    
     private EnemyBehavior behavior;
 
     @Override
     public void update(double dt) {
-        behavior.apply();
+        behavior.apply(player, dt);
         Point2D velocity = direction.multiply(speed.getValue() * dt);
         this.setTranslateX(this.getTranslateX() + velocity.getX());
         this.setTranslateY(this.getTranslateY() + velocity.getY());
+    }
+
+    /**
+     * @return the behavior
+     */
+    public final EnemyBehavior getBehavior() {
+        return behavior;
+    }
+
+    /**
+     * @param behavior the behavior to set
+     */
+    public final void setBehavior(EnemyBehavior behavior) {
+        if (this.behavior != null) {
+            this.behavior.cleanup(this);
+        }
+        this.behavior = behavior;
     }
 
 }

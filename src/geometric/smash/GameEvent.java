@@ -19,24 +19,29 @@ public class GameEvent extends Event {
     public static final EventType<GameEvent> ADD = new EventType<>(Event.ANY, "ENTITY_ADD");
     public static final EventType<GameEvent> REMOVE = new EventType<>(Event.ANY, "ENTITY_REMOVE");
     
-    private GameEntity e;
+    private GameEntity entity;
 
     public GameEvent(EventType<GameEvent> et) {
+        this(et, null);
+    }
+    public GameEvent(EventType<GameEvent> et, GameEntity e) {
         super(et);
+        this.entity = e;
     }
 
     /**
-     * @return the e
+     * @return the entity
      */
+    
     public GameEntity getEntity() {
-        return e;
+        return entity;
     }
 
     /**
-     * @param e the e to set
+     * @param entity the entity to set
      */
-    public void setEntity(GameEntity e) {
-        this.e = e;
+    public void setEntity(GameEntity entity) {
+        this.entity = entity;
     }
 
 }

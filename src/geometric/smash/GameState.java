@@ -7,6 +7,8 @@ package geometric.smash;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -46,9 +48,15 @@ public class GameState extends Pane {
         toAdd = new ArrayList<>();
         toRemove = new ArrayList<>();
         gameEntities.add(player);
+        Drone d = new Drone();
+        d.setTranslateX(400);
+        d.setTranslateY(400);
+        d.player = player;
+        toAdd.add(d);
         Platform.runLater(() -> {
             player.setTranslateX(this.getWidth() / 2.0);
             player.setTranslateY(this.getHeight() / 2.0);
+
         });
 
         setFocusTraversable(true);
