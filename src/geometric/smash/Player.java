@@ -22,21 +22,22 @@ import javafx.scene.shape.Rectangle;
 public class Player extends GameEntity {
 
     private DoubleModifier.Divider focusSpeed = new DoubleModifier.Divider(1.5);
-    
+
     private Weapon weapon;
 
     public Player() {
         this.speed.setBaseValue(150.0);
-        this.direction = Point2D.ZERO;
-        shapes.add(new Rectangle(20, 20));
-        shapes.get(0).setFill(Color.BLUE);
-        Circle coll = new Circle(1);
+        this.setDirection(Point2D.ZERO);
+        Rectangle r = new Rectangle(-20, -20, 40, 40);
+        shapes.add(r);
+        r.setFill(Color.BLUE);
+        Circle coll = new Circle(0.0, 0.0, 2.0);
         shapes.add(coll);
         colliders.add(coll);
+        weapon = new Peashooter();
+        getChildren().add(weapon);
+        coll.setFill(((Color) shapes.get(0).getFill()).invert());
         
-        coll.setFill(((Color)shapes.get(0).getFill()).invert());
-        coll.setCenterX(10.5);
-        coll.setCenterY(10.5);
     }
 
     private void updateDirection() {
@@ -44,25 +45,58 @@ public class Player extends GameEntity {
         boolean right = InputMap.isPressedOrHeld(KeyCode.D);
         boolean up = InputMap.isPressedOrHeld(KeyCode.W);
         boolean down = InputMap.isPressedOrHeld(KeyCode.S);
-        direction = Point2D.ZERO.add(left != right ? (left ? -1.0 : 1.0) : 0.0,
-                up != down ? (up ? -1.0 : 1.0) : 0.0);
+        setDirection(Point2D.ZERO.add(left != right ? (left ? -1.0 : 1.0) : 0.0,
+                up != down ? (up ? -1.0 : 1.0) : 0.0));
 
     }
 
-    @Override
-    public void update(double dt) {
-        updateDirection();
+    private void updateFocus() {
         boolean focused = InputMap.isPressedOrHeld(KeyCode.SHIFT);
-        if (focused) speed.addModifier(0, focusSpeed);
-        else speed.removeModifier(0, focusSpeed);
-        Point2D velocity = direction.multiply(speed.getValue() * dt);
-        this.setTranslateX(this.getTranslateX() + velocity.getX());
-        this.setTranslateY(this.getTranslateY() + velocity.getY());
+        if (focused) {
+            speed.addModifier(0, focusSpeed);
+        } else {
+            speed.removeModifier(0, focusSpeed);
+        }
+    }
+
+    private void updateWeapon(double dt) {
+
+        boolean left = InputMap.isPressedOrHeld(KeyCode.LEFT);
+        boolean right = InputMap.isPressedOrHeld(KeyCode.RIGHT);
+        boolean up = InputMap.isPressedOrHeld(KeyCode.UP);
+        boolean down = InputMap.isPressedOrHeld(KeyCode.DOWN);
+        weapon.setTrigger(false);
+        if ((left != right) != (up != down)) {
+            
+            if (left) {
+                weapon.setDirection(new Point2D(-1.0, 0.0));
+            } else if (up) {
+                weapon.setDirection(new Point2D(0.0, -1.0));
+            } else if (down) {
+                weapon.setDirection(new Point2D(0.0, 1.0));
+            } else if (right) {
+                weapon.setDirection(new Point2D(1.0, 0));
+            }
+            weapon.setTrigger(true);
+        }
+        weapon.update(dt);
+    }
+
+    @Override
+    public void preUpdate(double dt) {
+        updateDirection();
+        updateFocus();
+        updateWeapon(dt);
+    }
+
+    @Override
+    public void postUpdate(double dt) {
         Bounds pBounds = getBoundsInParent();
-        Bounds bounds = new Rectangle(0, 0, 800, 600).getBoundsInLocal();
-        
+        Bounds gsBounds = this.getGameStateBounds();
+        Bounds bounds = new Rectangle(0.0, 0.0, gsBounds.getWidth(), gsBounds.getHeight()).getBoundsInLocal();
+
         if (pBounds.getMinX() < bounds.getMinX()) {
-            this.setTranslateX( this.getTranslateX() + bounds.getMinX() - pBounds.getMinX());
+            this.setTranslateX(this.getTranslateX() + bounds.getMinX() - pBounds.getMinX());
         } else if (pBounds.getMaxX() > bounds.getMaxX()) {
             this.setTranslateX(this.getTranslateX() + bounds.getMaxX() - pBounds.getMaxX());
         }
@@ -71,7 +105,19 @@ public class Player extends GameEntity {
         } else if (pBounds.getMaxY() > bounds.getMaxY()) {
             this.setTranslateY(this.getTranslateY() + bounds.getMaxY() - pBounds.getMaxY());
         }
-
     }
 
+    /**
+     * @return the weapon
+     */
+    public Weapon getWeapon() {
+        return weapon;
+    }
+
+    /**
+     * @param weapon the weapon to set
+     */
+    public void setWeapon(Weapon weapon) {
+        this.weapon = weapon;
+    }
 }

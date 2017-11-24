@@ -22,15 +22,27 @@ import javafx.scene.shape.Shape;
  */
 public abstract class GameEntity extends Group {
 
+    /**
+     * @return the gameStateBounds
+     */
+    public Bounds getGameStateBounds() {
+        return gameState.getBoundsInLocal();
+    }
+    
     protected final ObservableList<Shape> shapes;
-    
+
     protected final ArrayList<Shape> colliders;
-    
+
     protected final Property<Double> speed;
-    protected Point2D direction;
+    protected final Property<Double> acceleration;
     
+    private Point2D direction;
+    
+    private GameState gameState;
+
     public GameEntity() {
         this.speed = new Property<>(0.0);
+        this.acceleration = new Property<>(0.0);
         this.direction = Point2D.ZERO;
         shapes = FXCollections.observableArrayList();
         shapes.addListener((ListChangeListener.Change<? extends Shape> c) -> {
@@ -40,9 +52,21 @@ public abstract class GameEntity extends Group {
             }
         });
         colliders = new ArrayList<>();
+        gameState = null;
     }
 
-    public abstract void update(double dt);
+    public abstract void preUpdate(double dt);
+
+    public abstract void postUpdate(double dt);
+
+    public final void update(double dt) {
+        preUpdate(dt);
+        speed.setBaseValue(speed.getBaseValue() + acceleration.getValue() * dt);
+        Point2D velocity = direction.multiply(speed.getValue() * dt);
+        this.setTranslateX(this.getTranslateX() + velocity.getX());
+        this.setTranslateY(this.getTranslateY() + velocity.getY());
+        postUpdate(dt);
+    }
 
     /**
      * @return the direction
@@ -56,5 +80,19 @@ public abstract class GameEntity extends Group {
      */
     public void setDirection(Point2D direction) {
         this.direction = direction;
+    }
+
+    /**
+     * @return the gameState
+     */
+    public GameState getGameState() {
+        return gameState;
+    }
+
+    /**
+     * @param gameState the gameState to set
+     */
+    public void setGameState(GameState gameState) {
+        this.gameState = gameState;
     }
 }

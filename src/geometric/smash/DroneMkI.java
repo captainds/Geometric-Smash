@@ -13,41 +13,60 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
-public class Drone extends Enemy {
+public class DroneMkI extends Enemy {
+
+    protected final Circle mainBody;
 
     /**
      * @return the ramBehavior
      */
-    public Ram getRamBehavior() {
+    public AbstractRam getRamBehavior() {
         return ramBehavior;
     }
 
     /**
      * @return the wanderBehavior
      */
-    public Wander getWanderBehavior() {
+    public AbstractWander getWanderBehavior() {
         return wanderBehavior;
     }
 
-    public final Ram ramBehavior;
+    protected AbstractRam ramBehavior;
 
-    public final Wander wanderBehavior;
+    protected AbstractWander wanderBehavior;
 
-    private double tolerance = 200.0;
-
-    public Drone() {
+    public DroneMkI() {
         speed.setBaseValue(50.0);
         this.wanderBehavior = new Wander();
         this.ramBehavior = new Ram();
-        Circle body = new Circle(5);
-        shapes.add(body);
-        colliders.add(body);
+        mainBody = new Circle(15);
+        mainBody.setCenterX(0.0);
+        mainBody.setCenterY(0.0);
+        shapes.add(mainBody);
+        colliders.add(mainBody);
         setBehavior(wanderBehavior);
-        body.setFill(Color.GREEN);
+        mainBody.setFill(Color.GREEN);
 
     }
 
-    public class Ram implements EnemyBehavior {
+    public static abstract class AbstractRam implements EnemyBehavior {
+
+        protected double time = 0.0;
+        protected double timeLimit = 1.5;
+        protected Point2D targetDir = Point2D.ZERO;
+        protected DoubleModifier.Multiplier ramMult = new DoubleModifier.Multiplier(2.0);
+
+    }
+
+    public static abstract class AbstractWander implements EnemyBehavior {
+
+        protected double time = 0.0;
+        protected double swapTime = 3.0;
+        protected double tolerance = 200.0;
+
+    }
+
+    public class Ram extends AbstractRam {
 
         /**
          * @return the targetDir
@@ -63,22 +82,16 @@ public class Drone extends Enemy {
             this.targetDir = targetDir;
         }
 
-        private double time = 0.0;
-        private double timeLimit = 1.5;
-        private Point2D targetDir = Point2D.ZERO;
-        private DoubleModifier.Multiplier ramMult = new DoubleModifier.Multiplier(2.0);
-
         @Override
         public void apply(Player player, double dt) {
 
             if (time == 0.0) {
 
-                direction = targetDir;
+                setDirection(targetDir);
                 speed.addModifier(1, ramMult);
 
             }
             time += dt;
-            System.out.println(time);
             if (time >= timeLimit) {
                 time = 0.0;
                 setBehavior(getWanderBehavior());
@@ -121,23 +134,18 @@ public class Drone extends Enemy {
 
     }
 
-    public class Wander implements EnemyBehavior {
-
-        double time = 0.0;
-        double swapTime = 3.0;
+    public class Wander extends AbstractWander {
 
         @Override
         public void apply(Player player, double dt) {
             Point2D pLoc = player.localToParent(player.getTranslateX(), player.getTranslateY());
-            Point2D eLoc = new Point2D(getTranslateX(), getTranslateY());
-            Parent current = Drone.this;
-            while (!(current instanceof GameState)) {
+            Point2D eLoc = new Point2D(getTranslateX() + mainBody.getCenterX(), getTranslateY() + mainBody.getCenterY());
+            Parent current = DroneMkI.this;
+            while (current != getGameState()) {
                 eLoc = current.localToParent(eLoc);
                 current = current.getParent();
             }
             Point2D diff = pLoc.subtract(eLoc);
-            System.out.println(diff);
-            System.out.println(diff.dotProduct(diff));
             if (time == 0.0) {
 
                 double direction = Math.random() * 360.0;
@@ -163,10 +171,17 @@ public class Drone extends Enemy {
 
     }
 
-    public void update(double dt) {
-        super.update(dt);
+    @Override
+    public void preUpdate(double dt) {
+        super.preUpdate(dt);
+    }
+
+    @Override
+    public void postUpdate(double dt) {
+
         Bounds pBounds = getBoundsInParent();
-        Bounds bounds = new Rectangle(0, 0, 800, 600).getBoundsInLocal();
+        Bounds gsBounds = this.getGameStateBounds();
+        Bounds bounds = new Rectangle(0.0, 0.0, gsBounds.getWidth(), gsBounds.getHeight()).getBoundsInLocal();
 
         if (pBounds.getMinX() < bounds.getMinX()) {
             this.setTranslateX(this.getTranslateX() + bounds.getMinX() - pBounds.getMinX());
@@ -178,5 +193,19 @@ public class Drone extends Enemy {
         } else if (pBounds.getMaxY() > bounds.getMaxY()) {
             this.setTranslateY(this.getTranslateY() + bounds.getMaxY() - pBounds.getMaxY());
         }
+    }
+
+    /**
+     * @param ramBehavior the ramBehavior to set
+     */
+    protected void setRamBehavior(Ram ramBehavior) {
+        this.ramBehavior = ramBehavior;
+    }
+
+    /**
+     * @param wanderBehavior the wanderBehavior to set
+     */
+    protected void setWanderBehavior(Wander wanderBehavior) {
+        this.wanderBehavior = wanderBehavior;
     }
 }

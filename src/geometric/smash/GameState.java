@@ -47,12 +47,17 @@ public class GameState extends Pane {
         });
         toAdd = new ArrayList<>();
         toRemove = new ArrayList<>();
-        gameEntities.add(player);
-        Drone d = new Drone();
+        DroneMkI d = new DroneMkI();
         d.setTranslateX(400);
         d.setTranslateY(400);
-        d.player = player;
-        toAdd.add(d);
+        d.setPlayer(player);
+        DroneMkII d2 = new DroneMkII();
+        d2.setTranslateX(300);
+        d2.setTranslateY(300);
+        d2.setPlayer(player);
+        addEntity(player);
+        addEntity(d);
+        addEntity(d2);
         Platform.runLater(() -> {
             player.setTranslateX(this.getWidth() / 2.0);
             player.setTranslateY(this.getHeight() / 2.0);
@@ -125,6 +130,7 @@ public class GameState extends Pane {
     }
 
     public void addEntity(GameEntity e) {
+        e.setGameState(this);
         toAdd.add(e);
     }
 

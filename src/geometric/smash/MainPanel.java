@@ -7,6 +7,7 @@ package geometric.smash;
 
 import javafx.application.Platform;
 import javafx.event.EventHandler;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 
 /**
@@ -21,11 +22,15 @@ public class MainPanel extends StackPane {
     private final EventHandler<GameEvent> onPause;
 
     public MainPanel() {
+
         this.setStyle("-fx-background-color: white");
         setFocusTraversable(true);
-        setMinSize(800, 600);
-        setPrefSize(800, 600);
-        setMaxSize(800, 600);
+        setMinSize(790, 590);
+        setPrefSize(790, 590);
+        setMaxSize(790, 590);
+        Platform.runLater(() -> {
+            System.out.println(this.getWidth() + " " + this.getHeight());
+        });
         requestFocus();
         menu = new MainMenu();
         getChildren().add(menu);

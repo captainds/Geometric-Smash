@@ -13,16 +13,18 @@ import javafx.geometry.Point2D;
  */
 public class Enemy extends GameEntity {
 
-    public Player player;
+    private Player player;
 
     private EnemyBehavior behavior;
 
     @Override
-    public void update(double dt) {
+    public void preUpdate(double dt) {
         behavior.apply(player, dt);
-        Point2D velocity = direction.multiply(speed.getValue() * dt);
-        this.setTranslateX(this.getTranslateX() + velocity.getX());
-        this.setTranslateY(this.getTranslateY() + velocity.getY());
+    }
+    
+    @Override
+    public void postUpdate(double dt) {
+        
     }
 
     /**
@@ -40,6 +42,20 @@ public class Enemy extends GameEntity {
             this.behavior.cleanup(this);
         }
         this.behavior = behavior;
+    }
+
+    /**
+     * @return the player
+     */
+    public Player getPlayer() {
+        return player;
+    }
+
+    /**
+     * @param player the player to set
+     */
+    public void setPlayer(Player player) {
+        this.player = player;
     }
 
 }
