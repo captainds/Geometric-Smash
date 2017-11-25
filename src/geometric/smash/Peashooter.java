@@ -5,7 +5,6 @@
  */
 package geometric.smash;
 
-import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 
 

@@ -17,22 +17,34 @@ import javafx.scene.shape.Circle;
 public class DroneMkII extends DroneMkI {
 
     public Shoot shootBehavior;
-    private Weapon weapon;
     public DoubleModifier.Multiplier halt = new DoubleModifier.Multiplier(0.0);
 
     public DroneMkII() {
         this.shootBehavior = new Shoot();
         this.wanderBehavior = new Wander();
         ramBehavior.ramMult.value *= 1.5;
+        getPointValue().setBaseValue(200);
+        getSpawnCost().setBaseValue(300);
         setBehavior(wanderBehavior);
+        wanderBehavior.tolerance = 340;
         mainBody.setFill((Color.DARKGREEN));
-        speed.setBaseValue(52.0);
-        weapon = new Peashooter();
-        weapon.setBaseBurstValue(3);
-        Circle c = new Circle(weapon.getTranslateX(), weapon.getTranslateY(), 6);
-        c.setFill(Color.DARKCYAN);
-        weapon.getChildren().add(c);
-        getChildren().add(weapon);
+        speed.setBaseValue(40.0);
+        setPrimaryMax(1);
+        setSecondaryMax((int) (Math.random() + 0.5));
+        getPrimaryWeapons().add(new Peashooter());
+        arrangePrimaryWeapons();
+        arrangeSecondaryWeapons();
+    }
+
+    @Override
+    public void arrangePrimaryWeapons() {
+        getChildren().addAll(getPrimaryWeapons());
+    }
+
+    @Override
+    public void arrangeSecondaryWeapons() {
+
+        getChildren().addAll(getSecondaryWeapons());
     }
 
     public static abstract class AbstractShoot implements EnemyBehavior {
@@ -54,11 +66,17 @@ public class DroneMkII extends DroneMkI {
                 current = current.getParent();
             }
             Point2D diff = pLoc.subtract(eLoc);
-            weapon.setDirection(diff);
-            weapon.setTrigger(true);
-            if (weapon.isFired()) {
+            if (getPrimaryWeapons().size() > 0) {
+                Weapon weapon = getPrimaryWeapons().get(0);
+                weapon.setDirection(diff);
+                weapon.setTrigger(true);
+                if (weapon.isFullBurst()) {
+                    --shotCount;
+                }
+            } else {
                 --shotCount;
             }
+
             if (shotCount <= 0) {
                 ramBehavior.targetDir = pLoc.subtract(eLoc).normalize();
                 setBehavior(ramBehavior);
@@ -70,7 +88,10 @@ public class DroneMkII extends DroneMkI {
         @Override
         public void cleanup(Enemy enemy) {
             shotCount = 3;
-            weapon.setTrigger(false);
+            if (getPrimaryWeapons().size() > 0) {
+                Weapon weapon = getPrimaryWeapons().get(0);
+                weapon.setTrigger(false);
+            }
             speed.removeModifier(0, halt);
 
         }
@@ -83,16 +104,24 @@ public class DroneMkII extends DroneMkI {
             Point2D pLoc = player.localToParent(player.getTranslateX(), player.getTranslateY());
             Point2D eLoc = new Point2D(getTranslateX() + mainBody.getCenterX(), getTranslateY() + mainBody.getCenterY());
             Parent current = DroneMkII.this;
-            while (!(current instanceof GameState)) {
+            while (current != getGameState()) {
                 eLoc = current.localToParent(eLoc);
                 current = current.getParent();
             }
             Point2D diff = pLoc.subtract(eLoc);
+            for (Weapon weapon : getSecondaryWeapons()) {
+                weapon.setTrigger(false);
+            }
             if (time == 0.0) {
 
-                double direction = Math.random() * 360.0;
+                double angle = Math.random() * 360.0;
 
-                setDirection(new Point2D(Math.cos(direction), -Math.sin(direction)));
+                Point2D dir = new Point2D(Math.cos(angle), -Math.sin(angle));
+                setDirection(dir);
+                for (Weapon weapon : getSecondaryWeapons()) {
+                    weapon.setDirection(dir.multiply(-1));
+                    weapon.setTrigger(true);
+                }
             }
             time += dt;
             if (diff.dotProduct(diff) < tolerance * tolerance) {
@@ -116,21 +145,10 @@ public class DroneMkII extends DroneMkI {
     @Override
     public void preUpdate(double dt) {
         super.preUpdate(dt);
-        weapon.update(dt);
-    }
-
-    /**
-     * @return the weapon
-     */
-    protected Weapon getWeapon() {
-        return weapon;
-    }
-
-    /**
-     * @param weapon the weapon to set
-     */
-    protected void setWeapon(Weapon weapon) {
-        this.weapon = weapon;
+        if (getPrimaryWeapons().size() > 0) {
+            Weapon weapon = getPrimaryWeapons().get(0);
+            weapon.update(dt);
+        }
     }
 
 }

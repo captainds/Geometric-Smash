@@ -5,6 +5,7 @@
  */
 package geometric.smash;
 
+import geometric.smash.property.DoubleModifier;
 import geometric.smash.property.Property;
 import java.util.ArrayList;
 import javafx.event.EventType;
@@ -20,6 +21,15 @@ import javafx.scene.shape.Shape;
  * @author AceForce
  */
 public class Weapon extends GameEntity {
+
+    /**
+     * @return the costMultiplier
+     */
+    public DoubleModifier.Multiplier getCostMultiplier() {
+        return costMultiplier;
+    }
+
+    private final DoubleModifier.Multiplier costMultiplier = new DoubleModifier.Multiplier(1.0);
 
     /**
      * @return the burstCount
@@ -87,8 +97,10 @@ public class Weapon extends GameEntity {
     protected final ArrayList<BulletAttribute> bulletAttributes;
 
     private boolean trigger;
-    
+
     private boolean fired;
+
+    private boolean fullBurst;
 
     public Weapon() {
         this.firing = false;
@@ -122,6 +134,7 @@ public class Weapon extends GameEntity {
     @Override
     public void preUpdate(double dt) {
         fired = false;
+        fullBurst = false;
         if (!firing) {
             cooldownTimer -= dt;
             if (!trigger) {
@@ -144,6 +157,7 @@ public class Weapon extends GameEntity {
                 }
                 if (++burstCount >= burstValue.getValue()) {
                     firing = false;
+                    fullBurst = true;
                 }
             }
         }
@@ -208,6 +222,20 @@ public class Weapon extends GameEntity {
      */
     public void setFired(boolean fired) {
         this.fired = fired;
+    }
+
+    /**
+     * @return the fullBurst
+     */
+    public boolean isFullBurst() {
+        return fullBurst;
+    }
+
+    /**
+     * @param fullBurst the fullBurst to set
+     */
+    public void setFullBurst(boolean fullBurst) {
+        this.fullBurst = fullBurst;
     }
 
 }

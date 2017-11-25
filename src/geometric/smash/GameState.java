@@ -5,10 +5,7 @@
  */
 package geometric.smash;
 
-import java.time.Instant;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -55,9 +52,14 @@ public class GameState extends Pane {
         d2.setTranslateX(300);
         d2.setTranslateY(300);
         d2.setPlayer(player);
+        Gunner g = new Gunner();
+        g.setTranslateX(450);
+        g.setTranslateY(450);
+        g.setPlayer(player);
         addEntity(player);
         addEntity(d);
         addEntity(d2);
+        addEntity(g);
         Platform.runLater(() -> {
             player.setTranslateX(this.getWidth() / 2.0);
             player.setTranslateY(this.getHeight() / 2.0);
@@ -129,12 +131,12 @@ public class GameState extends Pane {
         return paused;
     }
 
-    public void addEntity(GameEntity e) {
+    private void addEntity(GameEntity e) {
         e.setGameState(this);
         toAdd.add(e);
     }
 
-    public void removeEntity(GameEntity e) {
+    private void removeEntity(GameEntity e) {
         toRemove.add(e);
     }
 }

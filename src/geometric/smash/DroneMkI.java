@@ -36,9 +36,11 @@ public class DroneMkI extends Enemy {
     protected AbstractWander wanderBehavior;
 
     public DroneMkI() {
-        speed.setBaseValue(50.0);
+        speed.setBaseValue(60.0);
         this.wanderBehavior = new Wander();
         this.ramBehavior = new Ram();
+        getPointValue().setBaseValue(100);
+        getSpawnCost().setBaseValue(100);
         mainBody = new Circle(15);
         mainBody.setCenterX(0.0);
         mainBody.setCenterY(0.0);
@@ -46,6 +48,16 @@ public class DroneMkI extends Enemy {
         colliders.add(mainBody);
         setBehavior(wanderBehavior);
         mainBody.setFill(Color.GREEN);
+
+    }
+
+    @Override
+    public void arrangePrimaryWeapons() {
+
+    }
+
+    @Override
+    public void arrangeSecondaryWeapons() {
 
     }
 
@@ -62,7 +74,7 @@ public class DroneMkI extends Enemy {
 
         protected double time = 0.0;
         protected double swapTime = 3.0;
-        protected double tolerance = 200.0;
+        protected double tolerance = 280.0;
 
     }
 
@@ -172,16 +184,11 @@ public class DroneMkI extends Enemy {
     }
 
     @Override
-    public void preUpdate(double dt) {
-        super.preUpdate(dt);
-    }
-
-    @Override
     public void postUpdate(double dt) {
 
         Bounds pBounds = getBoundsInParent();
-        Bounds gsBounds = this.getGameStateBounds();
-        Bounds bounds = new Rectangle(0.0, 0.0, gsBounds.getWidth(), gsBounds.getHeight()).getBoundsInLocal();
+        GameState gameState = getGameState();
+        Bounds bounds = new Rectangle(0.0, 0.0, gameState.getWidth(), gameState.getHeight()).getBoundsInLocal();
 
         if (pBounds.getMinX() < bounds.getMinX()) {
             this.setTranslateX(this.getTranslateX() + bounds.getMinX() - pBounds.getMinX());

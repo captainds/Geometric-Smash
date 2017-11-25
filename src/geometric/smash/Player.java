@@ -28,7 +28,9 @@ public class Player extends GameEntity {
     public Player() {
         this.speed.setBaseValue(150.0);
         this.setDirection(Point2D.ZERO);
-        Rectangle r = new Rectangle(-20, -20, 40, 40);
+        Rectangle r = new Rectangle(36, 36);
+        r.setX(-r.getWidth() / 2);
+        r.setY(-r.getHeight() / 2);
         shapes.add(r);
         r.setFill(Color.BLUE);
         Circle coll = new Circle(0.0, 0.0, 2.0);
@@ -92,9 +94,9 @@ public class Player extends GameEntity {
     @Override
     public void postUpdate(double dt) {
         Bounds pBounds = getBoundsInParent();
-        Bounds gsBounds = this.getGameStateBounds();
-        Bounds bounds = new Rectangle(0.0, 0.0, gsBounds.getWidth(), gsBounds.getHeight()).getBoundsInLocal();
-
+        GameState gameState = getGameState();
+        Bounds bounds = new Rectangle(0.0, 0.0, gameState.getWidth(), gameState.getHeight()).getBoundsInLocal();
+        
         if (pBounds.getMinX() < bounds.getMinX()) {
             this.setTranslateX(this.getTranslateX() + bounds.getMinX() - pBounds.getMinX());
         } else if (pBounds.getMaxX() > bounds.getMaxX()) {

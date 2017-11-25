@@ -56,8 +56,8 @@ public class Bullet extends GameEntity {
     public void postUpdate(double dt) {
 
         Bounds b = getBoundsInParent();
-        Bounds gsBounds = this.getGameStateBounds();
-        Bounds bounds = new Rectangle(0.0, 0.0, gsBounds.getWidth(), gsBounds.getHeight()).getBoundsInLocal();
+        GameState gameState = getGameState();
+        Bounds bounds = new Rectangle(0.0, 0.0, gameState.getWidth(), gameState.getHeight()).getBoundsInLocal();
         if (b.getMinX() < bounds.getMinX() || b.getMaxX() > bounds.getMaxX()
                 || b.getMinY() < bounds.getMinY() || b.getMaxY() > bounds.getMaxY()) {
             fireEvent(new GameEvent(GameEvent.REMOVE, this));
