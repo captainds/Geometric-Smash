@@ -31,7 +31,7 @@ public class DroneMkII extends DroneMkI {
         speed.setBaseValue(40.0);
         setPrimaryMax(1);
         setSecondaryMax((int) (Math.random() + 0.5));
-        getPrimaryWeapons().add(new Peashooter());
+        getPrimaryWeapons().add(new SpreadShot(15, 0, 360));
         arrangePrimaryWeapons();
         arrangeSecondaryWeapons();
     }

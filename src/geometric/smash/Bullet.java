@@ -6,6 +6,7 @@
 package geometric.smash;
 
 import geometric.smash.property.Property;
+import static java.lang.Math.PI;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.shape.Circle;
@@ -26,10 +27,10 @@ public class Bullet extends GameEntity {
         } else {
             switch (ba.getType()) {
                 case Circle:
-                    shape = new Circle(ba.getSize() * 2.0, ba.getSize(), ba.getSize());
+                    shape = new Circle(0.0, 0.0, ba.getSize());
                     break;
                 case Square:
-                    shape = new Rectangle(0.0, 0.0, ba.getSize(), ba.getSize());
+                    shape = new Rectangle(-ba.getSize() / 2, -ba.getSize() / 2, ba.getSize(), ba.getSize());
                     break;
                 default:
                     shape = new Text("ERROR");
@@ -38,8 +39,8 @@ public class Bullet extends GameEntity {
         }
         setTranslateX(origin.getX() - ba.getSize());
         setTranslateY(origin.getY() - ba.getSize());
-        double dir = Math.atan2(ba.getDirection().getY(), ba.getDirection().getX());
-        this.setDirection(new Point2D(Math.cos(dir + ba.getDirectionOffset()), Math.sin(dir + ba.getDirectionOffset())));
+        double dir = Math.atan2(-ba.getDirection().getY(), ba.getDirection().getX());
+        this.setDirection(new Point2D(Math.cos(dir + ba.getDirectionOffset() * PI / 180.0), -Math.sin(dir + ba.getDirectionOffset() * PI / 180.0)));
         this.speed.setBaseValue(ba.getSpeed().getValue());
         this.acceleration.setBaseValue(ba.getAcceleration().getValue());
         shapes.add(shape);

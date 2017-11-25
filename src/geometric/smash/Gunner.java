@@ -57,19 +57,19 @@ public class Gunner extends Enemy {
         secondaryWeapons.add(new Peashooter());
         secondaryWeapons.add(new Peashooter());
         ArrayList<Weapon> primaryWeapons = getPrimaryWeapons();
-        primaryWeapons.add(new Peashooter());
-        primaryWeapons.add(new Peashooter());
-        primaryWeapons.add(new Peashooter());
+        primaryWeapons.add(new SpreadShot(11, -60, 60));
+        primaryWeapons.add(new SpreadShot(13, -40, 40));
+        primaryWeapons.add(new SpreadShot(17, -60, 60));
 
         for (Weapon w : secondaryWeapons) {
             w.setBaseBurstValue(5);
-            w.getCooldown().setBaseValue(1.0);
+            w.getCooldown().setBaseValue(0.2);
             w.getBurstTime().setBaseValue(0.2);
         }
         for (Weapon w : primaryWeapons) {
             w.setBaseBurstValue(10);
             w.getCooldown().setBaseValue(1.0);
-            w.getBurstTime().setBaseValue(0.1);
+            w.getBurstTime().setBaseValue(0.5);
         }
         arrangePrimaryWeapons();
         arrangeSecondaryWeapons();

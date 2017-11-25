@@ -36,7 +36,7 @@ public class Player extends GameEntity {
         Circle coll = new Circle(0.0, 0.0, 2.0);
         shapes.add(coll);
         colliders.add(coll);
-        weapon = new Peashooter();
+        weapon = new SpreadShot(5, -60, 60);
         getChildren().add(weapon);
         coll.setFill(((Color) shapes.get(0).getFill()).invert());
         
