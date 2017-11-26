@@ -13,12 +13,11 @@ public class SpreadShot extends Weapon {
         if (bulletCount == 0) {
             return;
         }
-        System.out.printf("SpreadShot: %d, %f - %f\n", bulletCount, minAngle, maxAngle);
+        this.getCostMultiplier().value = 1.0 + Math.log10(bulletCount / 1.2);
         double midAngle = (minAngle + maxAngle) / 2;
         double diffAngle = (maxAngle - minAngle) / bulletCount;
         double diffAngleOrg = diffAngle;
         boolean even = bulletCount % 2 == 0;
-        System.out.printf("ma, da, dao: %f, %f, %f\n", midAngle, diffAngle, diffAngleOrg);
         if (!even) {
             BulletAttribute ba = new BulletAttribute();
             ba.setDirectionOffset(midAngle);
@@ -26,7 +25,6 @@ public class SpreadShot extends Weapon {
             ba.setColor(Color.WHITE);
             ba.getSpeed().setBaseValue(100.0);
             bulletAttributes.add(ba);
-            System.out.printf("ba: %f, %f\n", ba.getDirectionOffset(), midAngle);
             bulletCount--;
         }
         while (bulletCount > 0) {
@@ -36,7 +34,6 @@ public class SpreadShot extends Weapon {
             ba.setColor(Color.WHITE);
             ba.getSpeed().setBaseValue(100.0);
             bulletAttributes.add(ba);
-            System.out.printf("ba: %f\n", ba.getDirectionOffset());
             --bulletCount;
             ba = new BulletAttribute();
             ba.setDirectionOffset(midAngle - diffAngle);
@@ -44,7 +41,6 @@ public class SpreadShot extends Weapon {
             ba.setColor(Color.WHITE);
             ba.getSpeed().setBaseValue(100.0);
             bulletAttributes.add(ba);
-            System.out.printf("ba: %f\n", ba.getDirectionOffset());
             --bulletCount;
             diffAngle += diffAngleOrg;
         }

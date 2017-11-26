@@ -13,6 +13,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.Parent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 
 public class DroneMkII extends DroneMkI {
 
@@ -24,16 +25,16 @@ public class DroneMkII extends DroneMkI {
         this.wanderBehavior = new Wander();
         ramBehavior.ramMult.value *= 1.5;
         getPointValue().setBaseValue(200);
-        getSpawnCost().setBaseValue(300);
+        getSpawnCost().setBaseValue(300.0);
         setBehavior(wanderBehavior);
         wanderBehavior.tolerance = 340;
         mainBody.setFill((Color.DARKGREEN));
+        Rectangle rectangle = new Rectangle(-5, -5, 10, 10);
+        rectangle.setFill(Color.RED);
+        shapes.add(rectangle);
         speed.setBaseValue(40.0);
         setPrimaryMax(1);
         setSecondaryMax((int) (Math.random() + 0.5));
-        getPrimaryWeapons().add(new SpreadShot(15, 0, 360));
-        arrangePrimaryWeapons();
-        arrangeSecondaryWeapons();
     }
 
     @Override

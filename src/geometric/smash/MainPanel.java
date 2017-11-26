@@ -17,9 +17,10 @@ import javafx.scene.layout.StackPane;
 public class MainPanel extends StackPane {
 
     private final MainMenu menu;
-    private final GameState gameState;
+    private GameState gameState;
     private final EventHandler<GameEvent> onStart;
     private final EventHandler<GameEvent> onPause;
+    private final EventHandler<GameEvent> onEnd;
 
     public MainPanel() {
 
@@ -34,12 +35,13 @@ public class MainPanel extends StackPane {
         requestFocus();
         menu = new MainMenu();
         getChildren().add(menu);
-        gameState = new GameState();
 
         onStart = (GameEvent e) -> {
+            startGame();
             getChildren().remove(menu);
             getChildren().add(gameState);
             gameState.setPaused(false);
+            e.consume();
         };
 
         onPause = (GameEvent e) -> {
@@ -53,8 +55,20 @@ public class MainPanel extends StackPane {
             e.consume();
         };
 
+        onEnd = (GameEvent e) -> {
+            getChildren().clear();
+            getChildren().add(menu);
+            e.consume();
+        };
+
         setEventHandler(GameEvent.START, onStart);
         setEventHandler(GameEvent.PAUSE, onPause);
+        setEventHandler(GameEvent.END, onEnd);
+    }
+
+    private void startGame() {
+        gameState = new GameState();
+
     }
 
 }

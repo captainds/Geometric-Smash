@@ -7,6 +7,7 @@ package geometric.smash;
 
 import geometric.smash.property.DoubleModifier;
 import geometric.smash.property.Property;
+import java.util.Random;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
@@ -27,19 +28,28 @@ public class Player extends GameEntity {
 
     public Player() {
         this.speed.setBaseValue(150.0);
-        this.setDirection(Point2D.ZERO);
+        this.setDirection(new Point2D(1.0, 0.0));
         Rectangle r = new Rectangle(36, 36);
         r.setX(-r.getWidth() / 2);
         r.setY(-r.getHeight() / 2);
         shapes.add(r);
         r.setFill(Color.BLUE);
-        Circle coll = new Circle(0.0, 0.0, 2.0);
+        Circle coll = new Circle(0.0, 0.0, 3.0);
         shapes.add(coll);
         colliders.add(coll);
-        weapon = new SpreadShot(5, -60, 60);
+        if (new Random().nextBoolean()) {
+            weapon = new SpreadShot(5, -60, 60);
+            weapon.setBaseBurstValue(2);
+            weapon.getBurstTime().setBaseValue(0.5);
+        } else {
+            weapon = new Peashooter();
+            weapon.setBaseBurstValue(5);
+            weapon.getBurstTime().setBaseValue(0.12);
+            weapon.getCooldown().setBaseValue(0.5) ;
+        }
         getChildren().add(weapon);
         coll.setFill(((Color) shapes.get(0).getFill()).invert());
-        
+
     }
 
     private void updateDirection() {
@@ -69,7 +79,7 @@ public class Player extends GameEntity {
         boolean down = InputMap.isPressedOrHeld(KeyCode.DOWN);
         weapon.setTrigger(false);
         if ((left != right) != (up != down)) {
-            
+
             if (left) {
                 weapon.setDirection(new Point2D(-1.0, 0.0));
             } else if (up) {
@@ -96,7 +106,7 @@ public class Player extends GameEntity {
         Bounds pBounds = getBoundsInParent();
         GameState gameState = getGameState();
         Bounds bounds = new Rectangle(0.0, 0.0, gameState.getWidth(), gameState.getHeight()).getBoundsInLocal();
-        
+
         if (pBounds.getMinX() < bounds.getMinX()) {
             this.setTranslateX(this.getTranslateX() + bounds.getMinX() - pBounds.getMinX());
         } else if (pBounds.getMaxX() > bounds.getMaxX()) {

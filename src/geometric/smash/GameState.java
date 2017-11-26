@@ -6,6 +6,7 @@
 package geometric.smash;
 
 import java.util.ArrayList;
+import java.util.Random;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -27,6 +28,7 @@ public class GameState extends Pane {
     private ArrayList<GameEntity> toRemove;
     private final AnimationTimer gameLoop;
     private boolean paused;
+    Random rng = new Random();
 
     public GameState() {
         this.setStyle("-fx-background-color: black");
@@ -44,27 +46,9 @@ public class GameState extends Pane {
         });
         toAdd = new ArrayList<>();
         toRemove = new ArrayList<>();
-        DroneMkI d = new DroneMkI();
-        d.setTranslateX(400);
-        d.setTranslateY(400);
-        d.setPlayer(player);
-        DroneMkII d2 = new DroneMkII();
-        d2.setTranslateX(300);
-        d2.setTranslateY(300);
-        d2.setPlayer(player);
-        Gunner g = new Gunner();
-        g.setTranslateX(450);
-        g.setTranslateY(450);
-        g.setPlayer(player);
         addEntity(player);
-        addEntity(d);
-        addEntity(d2);
-        addEntity(g);
-        Platform.runLater(() -> {
-            player.setTranslateX(this.getWidth() / 2.0);
-            player.setTranslateY(this.getHeight() / 2.0);
-
-        });
+        player.setTranslateX(400);
+        player.setTranslateY(400);
 
         setFocusTraversable(true);
         requestFocus();
@@ -76,6 +60,14 @@ public class GameState extends Pane {
         addEventHandler(GameEvent.REMOVE, (GameEvent e) -> {
             removeEntity(e.getEntity());
         });
+
+        ArrayList<Enemy> enemies = generateEnemies(rng.nextInt(30000) + 10000);
+        for (Enemy enemy : enemies) {
+            enemy.setPlayer(player);
+            enemy.setTranslateX(rng.nextBoolean() ? rng.nextInt(300) : rng.nextInt(200) + 450);
+            enemy.setTranslateY(rng.nextBoolean() ? rng.nextInt(300) : rng.nextInt(200) + 450);
+            addEntity(enemy);
+        }
 
         gameLoop = new AnimationTimer() {
             boolean running = true;
@@ -138,5 +130,90 @@ public class GameState extends Pane {
 
     private void removeEntity(GameEntity e) {
         toRemove.add(e);
+    }
+
+    public ArrayList<Enemy> generateEnemies(int pointSug) {
+        ArrayList<Enemy> enemies = new ArrayList<>();
+        ArrayList<Integer> pointSuggestions = new ArrayList<>();
+        boolean qualOverQuant = rng.nextBoolean();
+        int enemyMax = rng.nextInt(4) + 4;
+        int pointMin = Math.max(pointSug / enemyMax, 100);
+        if (!qualOverQuant) {
+
+            enemyMax *= (1.75 + rng.nextDouble());
+        }
+        for (int i = 0; i < enemyMax; i++) {
+
+            Enemy e = generateEnemy(Math.max(200, pointSug));
+            pointSug -= e.getSpawnCost().getValue();
+            enemies.add(e);
+
+        }
+        return enemies;
+    }
+
+    private Enemy generateEnemy(int suggestedPoints) {
+        Enemy enemy = null;
+        if (suggestedPoints > 25000) {
+            enemy = new Gunner();
+        } else if (suggestedPoints > 14000) {
+            enemy = new DroneMkII();
+        } else {
+            enemy = new DroneMkI();
+        }
+        for (int i = 0; i < enemy.getPrimaryMax(); i++) {
+            Weapon w;
+            if (rng.nextBoolean()) {
+                w = new Peashooter();
+                w.setBaseBurstValue(rng.nextInt(4) + 3);
+                w.getCooldown().setBaseValue(0.5);
+            } else {
+                double angle1 = rng.nextDouble() * -135.0, angle2 = rng.nextDouble() * 135.0;
+                if (angle1 >= angle2) {
+                    double tmp = angle1;
+                    angle1 = angle2;
+                    angle2 = tmp;
+                }
+                if (angle2 - angle1 < 30) {
+                    angle2 = angle1 + 30;
+                }
+                w = new SpreadShot(3 + rng.nextInt(9), angle1, angle2);
+                w.setBaseBurstValue(rng.nextInt(3) + 1);
+                w.getCooldown().setBaseValue(1.0);
+            }
+            enemy.getSpawnCost().addModifier(0, w.getCostMultiplier());
+            enemy.addPrimaryWeapon(w);
+        }
+        suggestedPoints -= enemy.getSpawnCost().getValue();
+        if (suggestedPoints > 0) {
+            for (int i = 0; i < enemy.getSecondaryMax(); i++) {
+                Weapon w;
+                if (rng.nextBoolean()) {
+                    w = new Peashooter();
+                    w.setBaseBurstValue(rng.nextInt(2) + 1);
+                    w.getCooldown().setBaseValue(0.8);
+                } else {
+                    double angle1 = rng.nextDouble() * 360, angle2 = rng.nextDouble() * 360.0;
+                    if (angle1 >= angle2) {
+                        double tmp = angle1;
+                        angle1 = angle2;
+                        angle2 = tmp;
+                    }
+                    if (angle2 - angle1 < 20) {
+                        angle2 = angle1 + 20;
+                    }
+                    w = new SpreadShot(2 + rng.nextInt(5), angle1, angle2);
+                    w.setBaseBurstValue(rng.nextInt(2) + 1);
+                    w.getCooldown().setBaseValue(1.0);
+                }
+                enemy.getSpawnCost().addModifier(0, w.getCostMultiplier());
+
+                enemy.addSecondaryWeapon(w);
+            }
+        }
+        enemy.arrangePrimaryWeapons();
+        enemy.arrangeSecondaryWeapons();
+        System.out.println(enemy.getSpawnCost().getValue());
+        return enemy;
     }
 }

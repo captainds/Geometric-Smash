@@ -36,7 +36,7 @@ public class Gunner extends Enemy {
         Shape combo = Shape.intersect(new Rectangle(1, 1), new Rectangle(5, 5, 1, 1));
         speed.setBaseValue(50.0);
         getPointValue().setBaseValue(1000);
-        getSpawnCost().setBaseValue(800);
+        getSpawnCost().setBaseValue(800.0);
         for (Shape s : sideParts) {
             combo = Shape.union(s, combo);
             s.setStroke(Color.GREEN);
@@ -47,32 +47,13 @@ public class Gunner extends Enemy {
         shapes.add(mainBody);
         colliders.add(Shape.union(mainBody, combo));
         mainBody.setFill(Color.RED);
-        setPrimaryMax(new Random().nextInt(3) + 2);
-        setSecondaryMax(4 + new Random().nextInt(2) * 4);
+        setPrimaryMax(new Random().nextInt(3) + 1);
+        setSecondaryMax(4);
         setBehavior(wander);
 
         ArrayList<Weapon> secondaryWeapons = getSecondaryWeapons();
-        secondaryWeapons.add(new Peashooter());
-        secondaryWeapons.add(new Peashooter());
-        secondaryWeapons.add(new Peashooter());
-        secondaryWeapons.add(new Peashooter());
         ArrayList<Weapon> primaryWeapons = getPrimaryWeapons();
-        primaryWeapons.add(new SpreadShot(11, -60, 60));
-        primaryWeapons.add(new SpreadShot(13, -40, 40));
-        primaryWeapons.add(new SpreadShot(17, -60, 60));
 
-        for (Weapon w : secondaryWeapons) {
-            w.setBaseBurstValue(5);
-            w.getCooldown().setBaseValue(0.2);
-            w.getBurstTime().setBaseValue(0.2);
-        }
-        for (Weapon w : primaryWeapons) {
-            w.setBaseBurstValue(10);
-            w.getCooldown().setBaseValue(1.0);
-            w.getBurstTime().setBaseValue(0.5);
-        }
-        arrangePrimaryWeapons();
-        arrangeSecondaryWeapons();
     }
 
     @Override

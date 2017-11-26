@@ -22,8 +22,8 @@ import javafx.scene.text.Text;
 public class PauseState extends BorderPane {
 
     public PauseState() {
-        Text pText = new Text("PAUSED");
-        pText.setFont(new Font(64));
+        Text pText = new Text("PAUSED\nPRESS P TO UNPAUSE\nPRESS ESC TO RETURN TO MAIN MENU");
+        pText.setFont(new Font(32));
         pText.setFill(Color.WHITE);
         pText.setStroke(Color.BLACK);
         setCenter(pText);
@@ -31,7 +31,10 @@ public class PauseState extends BorderPane {
             @Override
             public void handle(long l) {
                 InputMap.processInputs();
-                if (InputMap.isReleased(KeyCode.P)) {
+                if (InputMap.isReleased(KeyCode.ESCAPE)) {
+                    fireEvent(new GameEvent(GameEvent.END));
+
+                } else if (InputMap.isReleased(KeyCode.P)) {
                     fireEvent(new GameEvent(GameEvent.PAUSE));
                     stop();
                 }

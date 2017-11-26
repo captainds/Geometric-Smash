@@ -29,7 +29,7 @@ public class Weapon extends GameEntity {
         return costMultiplier;
     }
 
-    private final DoubleModifier.Multiplier costMultiplier = new DoubleModifier.Multiplier(1.0);
+    private final DoubleModifier.Multiplier costMultiplier = new DoubleModifier.Multiplier(1.1);
 
     /**
      * @return the burstCount

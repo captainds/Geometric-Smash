@@ -24,7 +24,7 @@ public abstract class Enemy extends GameEntity {
     /**
      * @return the levelCost
      */
-    public Property<Integer> getSpawnCost() {
+    public Property<Double> getSpawnCost() {
         return spawnCost;
     }
 
@@ -33,7 +33,7 @@ public abstract class Enemy extends GameEntity {
     private EnemyBehavior behavior;
 
     private Property<Integer> pointValue = new Property<Integer>(0);
-    private Property<Integer> spawnCost = new Property<Integer>(0);
+    private Property<Double> spawnCost = new Property<Double>(0.0);
 
     private int primaryMax = 0, secondaryMax = 0;
 

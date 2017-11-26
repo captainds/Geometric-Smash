@@ -40,7 +40,7 @@ public class DroneMkI extends Enemy {
         this.wanderBehavior = new Wander();
         this.ramBehavior = new Ram();
         getPointValue().setBaseValue(100);
-        getSpawnCost().setBaseValue(100);
+        getSpawnCost().setBaseValue(100.0);
         mainBody = new Circle(15);
         mainBody.setCenterX(0.0);
         mainBody.setCenterY(0.0);

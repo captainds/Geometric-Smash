@@ -11,6 +11,7 @@ import javafx.scene.paint.Color;
 public class Peashooter extends Weapon {
     public Peashooter() {
         this.getCooldown().setBaseValue(1.0/3.0);
+        this.getBurstTime().setBaseValue(0.5);
         BulletAttribute ba = new BulletAttribute();
         ba.setSize(1.5);
         ba.setType(BulletAttribute.Type.Circle);
