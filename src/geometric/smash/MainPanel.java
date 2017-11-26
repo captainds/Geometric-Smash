@@ -59,6 +59,7 @@ public class MainPanel extends StackPane {
             getChildren().clear();
             getChildren().add(menu);
             e.consume();
+            InputMap.processInputs();
         };
 
         setEventHandler(GameEvent.START, onStart);

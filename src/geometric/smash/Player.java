@@ -39,14 +39,17 @@ public class Player extends GameEntity {
         colliders.add(coll);
         if (new Random().nextBoolean()) {
             weapon = new SpreadShot(5, -60, 60);
-            weapon.setBaseBurstValue(2);
-            weapon.getBurstTime().setBaseValue(0.5);
+            weapon.setBaseBurstValue(3);
+            weapon.getBurstTime().setBaseValue(0.36);
+            weapon.getCooldown().setBaseValue(0.8);
         } else {
             weapon = new Peashooter();
             weapon.setBaseBurstValue(5);
             weapon.getBurstTime().setBaseValue(0.12);
-            weapon.getCooldown().setBaseValue(0.5) ;
+            weapon.getCooldown().setBaseValue(0.5);
         }
+        
+        weapon.setPlayerOwned(true);
         getChildren().add(weapon);
         coll.setFill(((Color) shapes.get(0).getFill()).invert());
 

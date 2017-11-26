@@ -33,26 +33,21 @@ public class Gunner extends Enemy {
         sideParts[2] = new Circle(25, 0, 25);
         sideParts[3] = new Circle(0, 25, 25);
         this.mainBody = new Rectangle(-30, -30, 60, 60);
-        Shape combo = Shape.intersect(new Rectangle(1, 1), new Rectangle(5, 5, 1, 1));
         speed.setBaseValue(50.0);
         getPointValue().setBaseValue(1000);
         getSpawnCost().setBaseValue(800.0);
         for (Shape s : sideParts) {
-            combo = Shape.union(s, combo);
             s.setStroke(Color.GREEN);
             s.setFill(Color.DARKRED);
+            colliders.add(s);
         }
         shapes.addAll(sideParts);
-        colliders.add(combo);
         shapes.add(mainBody);
-        colliders.add(Shape.union(mainBody, combo));
+        colliders.add(mainBody);
         mainBody.setFill(Color.RED);
         setPrimaryMax(new Random().nextInt(3) + 1);
         setSecondaryMax(4);
         setBehavior(wander);
-
-        ArrayList<Weapon> secondaryWeapons = getSecondaryWeapons();
-        ArrayList<Weapon> primaryWeapons = getPrimaryWeapons();
 
     }
 

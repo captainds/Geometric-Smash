@@ -20,6 +20,8 @@ import javafx.scene.text.Text;
  */
 public class Bullet extends GameEntity {
 
+    private boolean playerOwned;
+    
     public Bullet(Point2D origin, BulletAttribute ba) {
         Shape shape;
         if (null == ba.getType()) {
@@ -47,6 +49,8 @@ public class Bullet extends GameEntity {
         colliders.add(shape);
         shape.setFill(ba.getColor());
     }
+    
+    
 
     @Override
     public void preUpdate(double dt) {
@@ -64,6 +68,20 @@ public class Bullet extends GameEntity {
             fireEvent(new GameEvent(GameEvent.REMOVE, this));
 
         }
+    }
+
+    /**
+     * @return the playerOwned
+     */
+    public boolean isPlayerOwned() {
+        return playerOwned;
+    }
+
+    /**
+     * @param playerOwned the playerOwned to set
+     */
+    public void setPlayerOwned(boolean playerOwned) {
+        this.playerOwned = playerOwned;
     }
 
 }

@@ -95,4 +95,11 @@ public abstract class GameEntity extends Group {
     public void setGameState(GameState gameState) {
         this.gameState = gameState;
     }
+
+    /**
+     * @return the colliders
+     */
+    public ArrayList<Shape> getColliders() {
+        return colliders;
+    }
 }

@@ -101,7 +101,9 @@ public class Weapon extends GameEntity {
     private boolean fired;
 
     private boolean fullBurst;
-
+    
+    private boolean playerOwned = false;
+    
     public Weapon() {
         this.firing = false;
         trigger = false;
@@ -124,7 +126,9 @@ public class Weapon extends GameEntity {
         }
         for (BulletAttribute ba : bulletAttributes) {
             ba.setDirection(this.getDirection());
-            bullets.add(new Bullet(wLoc, ba));
+            Bullet bullet = new Bullet(wLoc, ba);
+            bullet.setPlayerOwned(playerOwned);
+            bullets.add(bullet);
 
         }
         fired = true;
@@ -236,6 +240,20 @@ public class Weapon extends GameEntity {
      */
     public void setFullBurst(boolean fullBurst) {
         this.fullBurst = fullBurst;
+    }
+
+    /**
+     * @return the playerOwned
+     */
+    public boolean isPlayerOwned() {
+        return playerOwned;
+    }
+
+    /**
+     * @param playerOwned the playerOwned to set
+     */
+    public void setPlayerOwned(boolean playerOwned) {
+        this.playerOwned = playerOwned;
     }
 
 }
