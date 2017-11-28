@@ -1,0 +1,195 @@
+@startuml
+abstract class geometric.smash.Enemy
+abstract class geometric.smash.GameEntity
+class geometric.smash.Bullet
+class geometric.smash.BulletAttribute
+class geometric.smash.DoubleModifier
+class geometric.smash.DroneMkI
+class geometric.smash.DroneMkII
+class geometric.smash.GameEvent
+class geometric.smash.GameState
+class geometric.smash.GeometricSmash
+class geometric.smash.Gunner
+class geometric.smash.InputMap
+class geometric.smash.IntegerModifier
+class geometric.smash.MainMenu
+class geometric.smash.MainPanel
+class geometric.smash.PauseState
+class geometric.smash.Peashooter
+class geometric.smash.Player
+class geometric.smash.Property
+class geometric.smash.SpreadShot
+class geometric.smash.Weapon
+class java.lang.Math
+class java.util.ArrayList
+class java.util.HashMap
+class java.util.HashSet
+class java.util.Iterator
+class java.util.Random
+class java.util.TreeMap
+class java.util.function.BiConsumer
+class javafx.animation.AnimationTimer
+class javafx.application.Application
+class javafx.application.Platform
+class javafx.beans.value.ChangeListener
+class javafx.beans.value.ObservableValue
+class javafx.collections.FXCollections
+class javafx.collections.ListChangeListener
+class javafx.collections.ObservableList
+class javafx.event.ActionEvent
+class javafx.event.Event
+class javafx.event.EventHandler
+class javafx.event.EventType
+class javafx.geometry.Bounds
+class javafx.geometry.Point2D
+class javafx.geometry.Pos
+class javafx.scene.Group
+class javafx.scene.Node
+class javafx.scene.Parent
+class javafx.scene.Scene
+class javafx.scene.control.Button
+class javafx.scene.input.KeyCode
+class javafx.scene.input.KeyEvent
+class javafx.scene.layout.BorderPane
+class javafx.scene.layout.ColumnConstraints
+class javafx.scene.layout.GridPane
+class javafx.scene.layout.Pane
+class javafx.scene.layout.RowConstraints
+class javafx.scene.layout.StackPane
+class javafx.scene.layout.VBox
+class javafx.scene.paint.Color
+class javafx.scene.shape.Circle
+class javafx.scene.shape.Rectangle
+class javafx.scene.shape.Shape
+class javafx.scene.text.Font
+class javafx.scene.text.Text
+class javafx.scene.transform.Shear
+class javafx.stage.Stage
+interface geometric.smash.EnemyBehavior
+geometric.smash.Enemy --|> geometric.smash.GameEntity
+geometric.smash.Enemy ..> java.util.ArrayList
+geometric.smash.GameEntity ..> java.util.ArrayList
+geometric.smash.GameEntity ..> javafx.collections.FXCollections
+geometric.smash.GameEntity ..> javafx.collections.ListChangeListener
+geometric.smash.GameEntity ..> javafx.collections.ObservableList
+geometric.smash.GameEntity ..> javafx.geometry.Bounds
+geometric.smash.GameEntity ..> javafx.geometry.Point2D
+geometric.smash.GameEntity --|> javafx.scene.Group
+geometric.smash.GameEntity ..> javafx.scene.shape.Rectangle
+geometric.smash.GameEntity ..> javafx.scene.shape.Shape
+geometric.smash.Bullet --|> geometric.smash.GameEntity
+geometric.smash.Bullet ..> java.lang.Math
+geometric.smash.Bullet ..> javafx.geometry.Bounds
+geometric.smash.Bullet ..> javafx.geometry.Point2D
+geometric.smash.Bullet ..> javafx.scene.shape.Circle
+geometric.smash.Bullet ..> javafx.scene.shape.Rectangle
+geometric.smash.Bullet ..> javafx.scene.shape.Shape
+geometric.smash.Bullet ..> javafx.scene.text.Text
+geometric.smash.BulletAttribute ..> javafx.geometry.Point2D
+geometric.smash.BulletAttribute ..> javafx.scene.paint.Color
+geometric.smash.DroneMkI --|> geometric.smash.Enemy
+geometric.smash.DroneMkI ..> javafx.geometry.Bounds
+geometric.smash.DroneMkI ..> javafx.geometry.Point2D
+geometric.smash.DroneMkI ..> javafx.scene.Parent
+geometric.smash.DroneMkI ..> javafx.scene.paint.Color
+geometric.smash.DroneMkI ..> javafx.scene.shape.Circle
+geometric.smash.DroneMkI ..> javafx.scene.shape.Rectangle
+geometric.smash.DroneMkII --|> geometric.smash.DroneMkI
+geometric.smash.DroneMkII ..> java.util.ArrayList
+geometric.smash.DroneMkII ..> java.util.Iterator
+geometric.smash.DroneMkII ..> javafx.geometry.Bounds
+geometric.smash.DroneMkII ..> javafx.geometry.Point2D
+geometric.smash.DroneMkII ..> javafx.scene.Parent
+geometric.smash.DroneMkII ..> javafx.scene.paint.Color
+geometric.smash.DroneMkII ..> javafx.scene.shape.Circle
+geometric.smash.DroneMkII ..> javafx.scene.shape.Rectangle
+geometric.smash.GameEvent --|> javafx.event.Event
+geometric.smash.GameEvent ..> javafx.event.EventType
+geometric.smash.GameState ..> java.util.ArrayList
+geometric.smash.GameState ..> java.util.Random
+geometric.smash.GameState ..> javafx.animation.AnimationTimer
+geometric.smash.GameState ..> javafx.application.Platform
+geometric.smash.GameState ..> javafx.collections.FXCollections
+geometric.smash.GameState ..> javafx.collections.ListChangeListener
+geometric.smash.GameState ..> javafx.collections.ObservableList
+geometric.smash.GameState ..> javafx.geometry.Bounds
+geometric.smash.GameState ..> javafx.scene.input.KeyCode
+geometric.smash.GameState ..> javafx.scene.input.KeyEvent
+geometric.smash.GameState --|> javafx.scene.layout.Pane
+geometric.smash.GameState ..> javafx.scene.shape.Shape
+geometric.smash.GeometricSmash --|> javafx.application.Application
+geometric.smash.GeometricSmash ..> javafx.beans.value.ChangeListener
+geometric.smash.GeometricSmash ..> javafx.beans.value.ObservableValue
+geometric.smash.GeometricSmash ..> javafx.scene.Scene
+geometric.smash.GeometricSmash ..> javafx.stage.Stage
+geometric.smash.Gunner --|> geometric.smash.Enemy
+geometric.smash.Gunner ..> java.util.ArrayList
+geometric.smash.Gunner ..> java.util.Random
+geometric.smash.Gunner ..> javafx.geometry.Bounds
+geometric.smash.Gunner ..> javafx.geometry.Point2D
+geometric.smash.Gunner ..> javafx.scene.Group
+geometric.smash.Gunner ..> javafx.scene.Parent
+geometric.smash.Gunner ..> javafx.scene.paint.Color
+geometric.smash.Gunner ..> javafx.scene.shape.Circle
+geometric.smash.Gunner ..> javafx.scene.shape.Rectangle
+geometric.smash.Gunner ..> javafx.scene.shape.Shape
+geometric.smash.InputMap ..> java.util.HashMap
+geometric.smash.InputMap ..> java.util.Iterator
+geometric.smash.InputMap ..> javafx.animation.AnimationTimer
+geometric.smash.InputMap ..> javafx.event.EventHandler
+geometric.smash.InputMap ..> javafx.event.EventType
+geometric.smash.InputMap ..> javafx.scene.input.KeyCode
+geometric.smash.InputMap ..> javafx.scene.input.KeyEvent
+geometric.smash.MainMenu ..> javafx.event.ActionEvent
+geometric.smash.MainMenu ..> javafx.event.EventHandler
+geometric.smash.MainMenu ..> javafx.geometry.Pos
+geometric.smash.MainMenu ..> javafx.scene.control.Button
+geometric.smash.MainMenu ..> javafx.scene.layout.ColumnConstraints
+geometric.smash.MainMenu --|> javafx.scene.layout.GridPane
+geometric.smash.MainMenu ..> javafx.scene.layout.RowConstraints
+geometric.smash.MainMenu ..> javafx.scene.layout.VBox
+geometric.smash.MainMenu ..> javafx.scene.paint.Color
+geometric.smash.MainMenu ..> javafx.scene.text.Font
+geometric.smash.MainMenu ..> javafx.scene.text.Text
+geometric.smash.MainMenu ..> javafx.scene.transform.Shear
+geometric.smash.MainPanel ..> javafx.application.Platform
+geometric.smash.MainPanel ..> javafx.event.EventHandler
+geometric.smash.MainPanel ..> javafx.scene.layout.BorderPane
+geometric.smash.MainPanel --|> javafx.scene.layout.StackPane
+geometric.smash.PauseState ..> javafx.animation.AnimationTimer
+geometric.smash.PauseState ..> javafx.scene.input.KeyCode
+geometric.smash.PauseState ..> javafx.scene.input.KeyEvent
+geometric.smash.PauseState --|> javafx.scene.layout.BorderPane
+geometric.smash.PauseState ..> javafx.scene.layout.GridPane
+geometric.smash.PauseState ..> javafx.scene.paint.Color
+geometric.smash.PauseState ..> javafx.scene.shape.Rectangle
+geometric.smash.PauseState ..> javafx.scene.text.Font
+geometric.smash.PauseState ..> javafx.scene.text.Text
+geometric.smash.Peashooter --|> geometric.smash.Weapon
+geometric.smash.Peashooter ..> javafx.scene.paint.Color
+geometric.smash.Player --|> geometric.smash.GameEntity
+geometric.smash.Player ..> java.util.Random
+geometric.smash.Player ..> javafx.geometry.Bounds
+geometric.smash.Player ..> javafx.geometry.Point2D
+geometric.smash.Player ..> javafx.scene.input.KeyCode
+geometric.smash.Player ..> javafx.scene.layout.Pane
+geometric.smash.Player ..> javafx.scene.paint.Color
+geometric.smash.Player ..> javafx.scene.shape.Circle
+geometric.smash.Player ..> javafx.scene.shape.Rectangle
+geometric.smash.Property ..> java.util.ArrayList
+geometric.smash.Property ..> java.util.HashMap
+geometric.smash.Property ..> java.util.HashSet
+geometric.smash.Property ..> java.util.TreeMap
+geometric.smash.Property ..> java.util.function.BiConsumer
+geometric.smash.SpreadShot --|> geometric.smash.Weapon
+geometric.smash.SpreadShot ..> javafx.scene.paint.Color
+geometric.smash.Weapon --|> geometric.smash.GameEntity
+geometric.smash.Weapon ..> java.util.ArrayList
+geometric.smash.Weapon ..> javafx.event.EventType
+geometric.smash.Weapon ..> javafx.geometry.Bounds
+geometric.smash.Weapon ..> javafx.geometry.Point2D
+geometric.smash.Weapon ..> javafx.scene.Node
+geometric.smash.Weapon ..> javafx.scene.shape.Circle
+geometric.smash.Weapon ..> javafx.scene.shape.Rectangle
+geometric.smash.Weapon ..> javafx.scene.shape.Shape
+@enduml

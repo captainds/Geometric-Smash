@@ -1,0 +1,508 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="Geometric-Smash">
+  <ClassDiagramComponents>
+    <Class name="Bullet" package="geometric.smash" visibility="public" xPosition="1931.0" yPosition="678.0">
+      <Fields>
+        <Field name="playerOwned" type="boolean" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="Point2D" name="origin"/>
+          <Argument type="BulletAttribute" name="ba"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="preUpdate" returnType="void" visibility="public">
+          <Argument type="double" name="dt"/>
+        </Method>
+        <Method name="postUpdate" returnType="void" visibility="public">
+          <Argument type="double" name="dt"/>
+        </Method>
+        <Method name="isPlayerOwned" returnType="boolean" visibility="public"/>
+        <Method name="setPlayerOwned" returnType="void" visibility="public">
+          <Argument type="boolean" name="playerOwned"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="BulletAttribute" package="geometric.smash" visibility="public" xPosition="1609.0" yPosition="2290.0">
+      <Fields>
+        <Field name="type" type="Type" visibility="private"/>
+        <Field name="size" type="double" visibility="private"/>
+        <Field name="speed" type="Property&lt;Double&gt;" visibility="private" isFinal="true"/>
+        <Field name="acceleration" type="Property&lt;Double&gt;" visibility="private" isFinal="true"/>
+        <Field name="direction" type="Point2D" visibility="private"/>
+        <Field name="directionOffset" type="double" visibility="private"/>
+        <Field name="color" type="Color" visibility="private"/>
+      </Fields>
+      <Constructors/>
+      <Methods>
+        <Method name="getType" returnType="Type" visibility="public"/>
+        <Method name="setType" returnType="void" visibility="public">
+          <Argument type="Type" name="type"/>
+        </Method>
+        <Method name="getSize" returnType="double" visibility="public"/>
+        <Method name="setSize" returnType="void" visibility="public">
+          <Argument type="double" name="size"/>
+        </Method>
+        <Method name="getSpeed" returnType="Property&lt;Double&gt;" visibility="public"/>
+        <Method name="getAcceleration" returnType="Property&lt;Double&gt;" visibility="public"/>
+        <Method name="getDirection" returnType="Point2D" visibility="public"/>
+        <Method name="setDirection" returnType="void" visibility="public">
+          <Argument type="Point2D" name="direction"/>
+        </Method>
+        <Method name="getColor" returnType="Color" visibility="public"/>
+        <Method name="setColor" returnType="void" visibility="public">
+          <Argument type="Color" name="color"/>
+        </Method>
+        <Method name="getDirectionOffset" returnType="double" visibility="protected"/>
+        <Method name="setDirectionOffset" returnType="void" visibility="protected">
+          <Argument type="double" name="directionOffset"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="DoubleModifier" package="geometric.smash" visibility="public" xPosition="2068.0" yPosition="945.0">
+      <Fields/>
+      <Constructors/>
+      <Methods/>
+    </Class>
+    <Class name="DroneMkI" package="geometric.smash" visibility="public" xPosition="578.0" yPosition="2891.0">
+      <Fields>
+        <Field name="mainBody" type="Circle" visibility="protected" isFinal="true"/>
+        <Field name="ramBehavior" type="AbstractRam" visibility="protected"/>
+        <Field name="wanderBehavior" type="AbstractWander" visibility="protected"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="getRamBehavior" returnType="AbstractRam" visibility="public"/>
+        <Method name="getWanderBehavior" returnType="AbstractWander" visibility="public"/>
+        <Method name="arrangePrimaryWeapons" returnType="void" visibility="public"/>
+        <Method name="arrangeSecondaryWeapons" returnType="void" visibility="public"/>
+        <Method name="postUpdate" returnType="void" visibility="public">
+          <Argument type="double" name="dt"/>
+        </Method>
+        <Method name="setRamBehavior" returnType="void" visibility="protected">
+          <Argument type="Ram" name="ramBehavior"/>
+        </Method>
+        <Method name="setWanderBehavior" returnType="void" visibility="protected">
+          <Argument type="Wander" name="wanderBehavior"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="DroneMkII" package="geometric.smash" visibility="public" xPosition="981.0" yPosition="2891.0">
+      <Fields>
+        <Field name="shootBehavior" type="Shoot" visibility="public"/>
+        <Field name="halt" type="DoubleModifier.Multiplier" visibility="public"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="arrangePrimaryWeapons" returnType="void" visibility="public"/>
+        <Method name="arrangeSecondaryWeapons" returnType="void" visibility="public"/>
+        <Method name="preUpdate" returnType="void" visibility="public">
+          <Argument type="double" name="dt"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Enemy" package="geometric.smash" visibility="public" isAbstract="true" xPosition="334.0" yPosition="1931.0">
+      <Fields>
+        <Field name="player" type="Player" visibility="private"/>
+        <Field name="behavior" type="EnemyBehavior" visibility="private"/>
+        <Field name="pointValue" type="Property&lt;Integer&gt;" visibility="private"/>
+        <Field name="spawnCost" type="Property&lt;Double&gt;" visibility="private"/>
+        <Field name="primaryMax" type="int" visibility="private"/>
+        <Field name="primaryWeapons" type="ArrayList&lt;Weapon&gt;" visibility="private" isFinal="true"/>
+      </Fields>
+      <Constructors/>
+      <Methods>
+        <Method name="getPointValue" returnType="Property&lt;Integer&gt;" visibility="public"/>
+        <Method name="getSpawnCost" returnType="Property&lt;Double&gt;" visibility="public"/>
+        <Method name="preUpdate" returnType="void" visibility="public">
+          <Argument type="double" name="dt"/>
+        </Method>
+        <Method name="postUpdate" returnType="void" visibility="public">
+          <Argument type="double" name="dt"/>
+        </Method>
+        <Method name="addPrimaryWeapon" returnType="void" visibility="public">
+          <Argument type="Weapon" name="w"/>
+        </Method>
+        <Method name="arrangePrimaryWeapons" returnType="void" visibility="public" isAbstract="true"/>
+        <Method name="addSecondaryWeapon" returnType="void" visibility="public">
+          <Argument type="Weapon" name="w"/>
+        </Method>
+        <Method name="arrangeSecondaryWeapons" returnType="void" visibility="public" isAbstract="true"/>
+        <Method name="getBehavior" returnType="EnemyBehavior" visibility="public" isFinal="true"/>
+        <Method name="setBehavior" returnType="void" visibility="public" isFinal="true">
+          <Argument type="EnemyBehavior" name="behavior"/>
+        </Method>
+        <Method name="getPlayer" returnType="Player" visibility="public"/>
+        <Method name="setPlayer" returnType="void" visibility="public">
+          <Argument type="Player" name="player"/>
+        </Method>
+        <Method name="getPrimaryWeapons" returnType="ArrayList&lt;Weapon&gt;" visibility="protected"/>
+        <Method name="getSecondaryWeapons" returnType="ArrayList&lt;Weapon&gt;" visibility="protected"/>
+        <Method name="setPrimaryMax" returnType="void" visibility="protected">
+          <Argument type="int" name="primaryMax"/>
+        </Method>
+        <Method name="setSecondaryMax" returnType="void" visibility="protected">
+          <Argument type="int" name="secondaryMax"/>
+        </Method>
+        <Method name="getPrimaryMax" returnType="int" visibility="public"/>
+        <Method name="getSecondaryMax" returnType="int" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="GameEntity" package="geometric.smash" visibility="public" isAbstract="true" xPosition="1278.0" yPosition="742.0">
+      <Fields>
+        <Field name="shapes" type="ObservableList&lt;Shape&gt;" visibility="protected" isFinal="true"/>
+        <Field name="colliders" type="ArrayList&lt;Shape&gt;" visibility="protected" isFinal="true"/>
+        <Field name="speed" type="Property&lt;Double&gt;" visibility="protected" isFinal="true"/>
+        <Field name="acceleration" type="Property&lt;Double&gt;" visibility="protected" isFinal="true"/>
+        <Field name="direction" type="Point2D" visibility="private"/>
+        <Field name="gameState" type="GameState" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="getGameStateBounds" returnType="Bounds" visibility="public"/>
+        <Method name="preUpdate" returnType="void" visibility="public" isAbstract="true">
+          <Argument type="double" name="dt"/>
+        </Method>
+        <Method name="postUpdate" returnType="void" visibility="public" isAbstract="true">
+          <Argument type="double" name="dt"/>
+        </Method>
+        <Method name="update" returnType="void" visibility="public" isFinal="true">
+          <Argument type="double" name="dt"/>
+        </Method>
+        <Method name="getDirection" returnType="Point2D" visibility="public"/>
+        <Method name="setDirection" returnType="void" visibility="public">
+          <Argument type="Point2D" name="direction"/>
+        </Method>
+        <Method name="getGameState" returnType="GameState" visibility="public"/>
+        <Method name="setGameState" returnType="void" visibility="public">
+          <Argument type="GameState" name="gameState"/>
+        </Method>
+        <Method name="getColliders" returnType="ArrayList&lt;Shape&gt;" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="GameEvent" package="geometric.smash" visibility="public" xPosition="1894.0" yPosition="122.0">
+      <Fields>
+        <Field name="START" type="EventType&lt;GameEvent&gt;" visibility="public" isStatic="true" isFinal="true"/>
+        <Field name="PAUSE" type="EventType&lt;GameEvent&gt;" visibility="public" isStatic="true" isFinal="true"/>
+        <Field name="END" type="EventType&lt;GameEvent&gt;" visibility="public" isStatic="true" isFinal="true"/>
+        <Field name="ADD" type="EventType&lt;GameEvent&gt;" visibility="public" isStatic="true" isFinal="true"/>
+        <Field name="REMOVE" type="EventType&lt;GameEvent&gt;" visibility="public" isStatic="true" isFinal="true"/>
+        <Field name="entity" type="GameEntity" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="EventType&lt;GameEvent&gt;" name="et"/>
+        </Constructor>
+        <Constructor visibility="public">
+          <Argument type="EventType&lt;GameEvent&gt;" name="et"/>
+          <Argument type="GameEntity" name="e"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getEntity" returnType="GameEntity" visibility="public"/>
+        <Method name="setEntity" returnType="void" visibility="public">
+          <Argument type="GameEntity" name="entity"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="GameState" package="geometric.smash" visibility="public" xPosition="1234.0" yPosition="274.0">
+      <Fields>
+        <Field name="player" type="Player" visibility="private" isFinal="true"/>
+        <Field name="gameEntities" type="ObservableList&lt;GameEntity&gt;" visibility="private"/>
+        <Field name="toAdd" type="ArrayList&lt;GameEntity&gt;" visibility="private"/>
+        <Field name="toRemove" type="ArrayList&lt;GameEntity&gt;" visibility="private"/>
+        <Field name="gameLoop" type="AnimationTimer" visibility="private" isFinal="true"/>
+        <Field name="paused" type="boolean" visibility="private"/>
+        <Field name="rng" type="Random" visibility="package"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="setPaused" returnType="void" visibility="public">
+          <Argument type="boolean" name="paused"/>
+        </Method>
+        <Method name="isPaused" returnType="boolean" visibility="public"/>
+        <Method name="addEntity" returnType="void" visibility="private">
+          <Argument type="GameEntity" name="e"/>
+        </Method>
+        <Method name="removeEntity" returnType="void" visibility="private">
+          <Argument type="GameEntity" name="e"/>
+        </Method>
+        <Method name="generateEnemies" returnType="ArrayList&lt;Enemy&gt;" visibility="public">
+          <Argument type="int" name="pointSug"/>
+        </Method>
+        <Method name="generateEnemy" returnType="Enemy" visibility="private">
+          <Argument type="int" name="suggestedPoints"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Gunner" package="geometric.smash" visibility="public" xPosition="1278.0" yPosition="2790.0">
+      <Fields>
+        <Field name="mainBody" type="Rectangle" visibility="private"/>
+        <Field name="sideParts" type="Circle[]" visibility="private"/>
+        <Field name="halt" type="DoubleModifier.Multiplier" visibility="public"/>
+        <Field name="wander" type="Wander" visibility="private"/>
+        <Field name="shoot" type="Shoot" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="arrangePrimaryWeapons" returnType="void" visibility="public"/>
+        <Method name="arrangeSecondaryWeapons" returnType="void" visibility="public"/>
+        <Method name="postUpdate" returnType="void" visibility="public">
+          <Argument type="double" name="dt"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="InputMap" package="geometric.smash" visibility="public" xPosition="208.0" yPosition="20.0">
+      <Fields>
+        <Field name="INPUT_MAP" type="HashMap&lt;KeyCode, KeyAction&gt;" visibility="private" isStatic="true" isFinal="true"/>
+        <Field name="INPUTS" type="HashMap&lt;KeyCode, EventType&lt;KeyEvent&gt;&gt;" visibility="private" isStatic="true" isFinal="true"/>
+        <Field name="HANDLER" type="EventHandler&lt;KeyEvent&gt;" visibility="private" isStatic="true" isFinal="true"/>
+      </Fields>
+      <Constructors/>
+      <Methods>
+        <Method name="isPressed" returnType="boolean" visibility="public" isStatic="true">
+          <Argument type="KeyCode" name="kc"/>
+        </Method>
+        <Method name="isReleased" returnType="boolean" visibility="public" isStatic="true">
+          <Argument type="KeyCode" name="kc"/>
+        </Method>
+        <Method name="isHeld" returnType="boolean" visibility="public" isStatic="true">
+          <Argument type="KeyCode" name="kc"/>
+        </Method>
+        <Method name="isPressedOrHeld" returnType="boolean" visibility="public" isStatic="true">
+          <Argument type="KeyCode" name="kc"/>
+        </Method>
+        <Method name="getHandler" returnType="EventHandler&lt;KeyEvent&gt;" visibility="public" isStatic="true"/>
+        <Method name="processInputs" returnType="void" visibility="public" isStatic="true"/>
+      </Methods>
+    </Class>
+    <Class name="MainMenu" package="geometric.smash" visibility="public" xPosition="1300.0" yPosition="10.0">
+      <Fields>
+        <Field name="startButton" type="Button" visibility="private" isFinal="true"/>
+        <Field name="exitButton" type="Button" visibility="private" isFinal="true"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods/>
+    </Class>
+    <Class name="MainPanel" package="geometric.smash" visibility="public" xPosition="821.0" yPosition="94.0">
+      <Fields>
+        <Field name="menu" type="MainMenu" visibility="private" isFinal="true"/>
+        <Field name="gameState" type="GameState" visibility="private"/>
+        <Field name="onStart" type="EventHandler&lt;GameEvent&gt;" visibility="private" isFinal="true"/>
+        <Field name="onPause" type="EventHandler&lt;GameEvent&gt;" visibility="private" isFinal="true"/>
+        <Field name="onEnd" type="EventHandler&lt;GameEvent&gt;" visibility="private" isFinal="true"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="startGame" returnType="void" visibility="private"/>
+      </Methods>
+    </Class>
+    <Class name="PauseState" package="geometric.smash" visibility="public" xPosition="638.0" yPosition="20.0">
+      <Fields/>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods/>
+    </Class>
+    <Class name="Peashooter" package="geometric.smash" visibility="public" xPosition="2039.0" yPosition="1962.0">
+      <Fields/>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods/>
+    </Class>
+    <Class name="Player" package="geometric.smash" visibility="public" xPosition="843.0" yPosition="703.0">
+      <Fields>
+        <Field name="focusSpeed" type="DoubleModifier.Divider" visibility="private"/>
+        <Field name="weapon" type="Weapon" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="updateDirection" returnType="void" visibility="private"/>
+        <Method name="updateFocus" returnType="void" visibility="private"/>
+        <Method name="updateWeapon" returnType="void" visibility="private">
+          <Argument type="double" name="dt"/>
+        </Method>
+        <Method name="preUpdate" returnType="void" visibility="public">
+          <Argument type="double" name="dt"/>
+        </Method>
+        <Method name="postUpdate" returnType="void" visibility="public">
+          <Argument type="double" name="dt"/>
+        </Method>
+        <Method name="getWeapon" returnType="Weapon" visibility="public"/>
+        <Method name="setWeapon" returnType="void" visibility="public">
+          <Argument type="Weapon" name="weapon"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Property" package="geometric.smash" visibility="public" xPosition="935.0" yPosition="2136.0">
+      <Fields>
+        <Field name="baseValue" type="Type" visibility="private"/>
+        <Field name="dirty" type="boolean" visibility="private"/>
+        <Field name="modifiers" type="TreeMap&lt;Integer, ArrayList&lt;Modifier&lt;Type&gt;&gt;&gt;" visibility="private" isFinal="true"/>
+        <Field name="modifierSet" type="HashSet&lt;Modifier&lt;Type&gt;&gt;" visibility="private" isFinal="true"/>
+        <Field name="applier" type="Applier&lt;Type&gt;" visibility="private" isFinal="true"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="Type" name="value"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="addModifier" returnType="void" visibility="public">
+          <Argument type="Integer" name="priority"/>
+          <Argument type="Modifier&lt;Type&gt;" name="modifier"/>
+        </Method>
+        <Method name="removeModifier" returnType="void" visibility="public">
+          <Argument type="Modifier&lt;Type&gt;" name="modifier"/>
+        </Method>
+        <Method name="removeModifier" returnType="void" visibility="public">
+          <Argument type="Integer" name="priority"/>
+          <Argument type="Modifier&lt;Type&gt;" name="modifier"/>
+        </Method>
+        <Method name="getBaseValue" returnType="Type" visibility="public" isFinal="true"/>
+        <Method name="setBaseValue" returnType="void" visibility="public" isFinal="true">
+          <Argument type="Type" name="baseValue"/>
+        </Method>
+        <Method name="getValue" returnType="Type" visibility="public" isFinal="true"/>
+      </Methods>
+    </Class>
+    <Class name="SpreadShot" package="geometric.smash" visibility="public" xPosition="1975.0" yPosition="1691.0">
+      <Fields/>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="int" name="bulletCount"/>
+          <Argument type="double" name="minAngle"/>
+          <Argument type="double" name="maxAngle"/>
+        </Constructor>
+      </Constructors>
+      <Methods/>
+    </Class>
+    <Class name="Weapon" package="geometric.smash" visibility="public" xPosition="1499.0" yPosition="1158.0">
+      <Fields>
+        <Field name="costMultiplier" type="DoubleModifier.Multiplier" visibility="private" isFinal="true"/>
+        <Field name="cooldown" type="Property&lt;Double&gt;" visibility="private" isFinal="true"/>
+        <Field name="burstTime" type="Property&lt;Double&gt;" visibility="private" isFinal="true"/>
+        <Field name="burstValue" type="Property&lt;Integer&gt;" visibility="private" isFinal="true"/>
+        <Field name="burstCount" type="int" visibility="private"/>
+        <Field name="cooldownTimer" type="double" visibility="private"/>
+        <Field name="burstTimer" type="double" visibility="private"/>
+        <Field name="firing" type="boolean" visibility="private"/>
+        <Field name="bulletAttributes" type="ArrayList&lt;BulletAttribute&gt;" visibility="protected" isFinal="true"/>
+        <Field name="trigger" type="boolean" visibility="private"/>
+        <Field name="fired" type="boolean" visibility="private"/>
+        <Field name="fullBurst" type="boolean" visibility="private"/>
+        <Field name="playerOwned" type="boolean" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="getCostMultiplier" returnType="DoubleModifier.Multiplier" visibility="public"/>
+        <Method name="getBurstCount" returnType="int" visibility="protected"/>
+        <Method name="setBurstCount" returnType="void" visibility="protected">
+          <Argument type="int" name="burstCount"/>
+        </Method>
+        <Method name="getBurstTime" returnType="Property&lt;Double&gt;" visibility="protected"/>
+        <Method name="getBurstValue" returnType="int" visibility="protected"/>
+        <Method name="setBaseBurstValue" returnType="void" visibility="protected">
+          <Argument type="int" name="burstValue"/>
+        </Method>
+        <Method name="getCooldownTimer" returnType="double" visibility="protected"/>
+        <Method name="getBurstTimer" returnType="double" visibility="protected"/>
+        <Method name="fireBullets" returnType="ArrayList&lt;Bullet&gt;" visibility="public"/>
+        <Method name="preUpdate" returnType="void" visibility="public">
+          <Argument type="double" name="dt"/>
+        </Method>
+        <Method name="postUpdate" returnType="void" visibility="public">
+          <Argument type="double" name="dt"/>
+        </Method>
+        <Method name="getCurrentTime" returnType="double" visibility="protected"/>
+        <Method name="setCurrentTime" returnType="void" visibility="protected">
+          <Argument type="double" name="currentTime"/>
+        </Method>
+        <Method name="getCooldown" returnType="Property&lt;Double&gt;" visibility="protected"/>
+        <Method name="getBulletAttributes" returnType="ArrayList&lt;BulletAttribute&gt;" visibility="protected"/>
+        <Method name="isTrigger" returnType="boolean" visibility="protected"/>
+        <Method name="setTrigger" returnType="void" visibility="protected">
+          <Argument type="boolean" name="trigger"/>
+        </Method>
+        <Method name="isFired" returnType="boolean" visibility="public"/>
+        <Method name="setFired" returnType="void" visibility="public">
+          <Argument type="boolean" name="fired"/>
+        </Method>
+        <Method name="isFullBurst" returnType="boolean" visibility="public"/>
+        <Method name="setFullBurst" returnType="void" visibility="public">
+          <Argument type="boolean" name="fullBurst"/>
+        </Method>
+        <Method name="isPlayerOwned" returnType="boolean" visibility="public"/>
+        <Method name="setPlayerOwned" returnType="void" visibility="public">
+          <Argument type="boolean" name="playerOwned"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Interface name="EnemyBehavior" package="geometric.smash" visibility="public" xPosition="236.0" yPosition="2891.0">
+      <Methods>
+        <Method name="apply" returnType="void" visibility="public">
+          <Argument type="Player" name="player"/>
+          <Argument type="double" name="dt"/>
+        </Method>
+        <Method name="cleanup" returnType="void" visibility="public">
+          <Argument type="Enemy" name="enemy"/>
+        </Method>
+      </Methods>
+    </Interface>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations>
+    <UseRelation source="geometric.smash.Weapon" target="geometric.smash.DoubleModifier" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="END" source="geometric.smash.GameEvent" target="geometric.smash.GameEvent" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <IsRelation name="is" source="geometric.smash.DroneMkI" target="geometric.smash.Enemy"/>
+    <IsRelation name="is" source="geometric.smash.Gunner" target="geometric.smash.Enemy"/>
+    <IsRelation name="is" source="geometric.smash.Bullet" target="geometric.smash.GameEntity"/>
+    <HasRelation name="REMOVE" source="geometric.smash.GameEvent" target="geometric.smash.GameEvent" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <IsRelation name="is" source="geometric.smash.Enemy" target="geometric.smash.GameEntity"/>
+    <IsRelation name="is" source="geometric.smash.Player" target="geometric.smash.GameEntity"/>
+    <HasRelation name="onEnd" source="geometric.smash.MainPanel" target="geometric.smash.GameEvent" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="gameState" source="geometric.smash.MainPanel" target="geometric.smash.GameState" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="primaryWeapons" source="geometric.smash.Enemy" target="geometric.smash.Weapon" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="ArrayList&lt;Weapon&gt;"/>
+    <HasRelation name="behavior" source="geometric.smash.Enemy" target="geometric.smash.EnemyBehavior" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <IsRelation name="is" source="geometric.smash.Peashooter" target="geometric.smash.Weapon"/>
+    <HasRelation name="player" source="geometric.smash.GameState" target="geometric.smash.Player" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="geometric.smash.Enemy" target="geometric.smash.Property" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="menu" source="geometric.smash.MainPanel" target="geometric.smash.MainMenu" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="weapon" source="geometric.smash.Player" target="geometric.smash.Weapon" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <IsRelation name="is" source="geometric.smash.DroneMkII" target="geometric.smash.DroneMkI"/>
+    <HasRelation name="PAUSE" source="geometric.smash.GameEvent" target="geometric.smash.GameEvent" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="entity" source="geometric.smash.GameEvent" target="geometric.smash.GameEntity" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="onPause" source="geometric.smash.MainPanel" target="geometric.smash.GameEvent" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="geometric.smash.Weapon" target="geometric.smash.Bullet" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <IsRelation name="is" source="geometric.smash.Weapon" target="geometric.smash.GameEntity"/>
+    <HasRelation name="onStart" source="geometric.smash.MainPanel" target="geometric.smash.GameEvent" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="geometric.smash.BulletAttribute" target="geometric.smash.Property" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="geometric.smash.Weapon" target="geometric.smash.Property" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <IsRelation name="is" source="geometric.smash.SpreadShot" target="geometric.smash.Weapon"/>
+    <HasRelation name="START" source="geometric.smash.GameEvent" target="geometric.smash.GameEvent" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="stores" source="geometric.smash.GameState" target="geometric.smash.GameEntity" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="ObservableList&lt;GameEntity&gt;"/>
+    <HasRelation name="bulletAttributes" source="geometric.smash.Weapon" target="geometric.smash.BulletAttribute" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="ArrayList&lt;BulletAttribute&gt;"/>
+    <HasRelation name="player" source="geometric.smash.Enemy" target="geometric.smash.Player" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="ADD" source="geometric.smash.GameEvent" target="geometric.smash.GameEvent" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+  </ClassDiagramRelations>
+</ClassDiagram>

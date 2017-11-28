@@ -5,8 +5,6 @@
  */
 package geometric.smash;
 
-import geometric.smash.property.DoubleModifier;
-import geometric.smash.property.Property;
 import java.util.ArrayList;
 import javafx.event.EventType;
 import javafx.geometry.Bounds;
