@@ -154,7 +154,6 @@ public class GameState extends Pane {
                     gameEntities.addAll(toAdd);
                     toAdd.clear();
                     toRemove.clear();
-                    
                     if (InputMap.isReleased(KeyCode.P)) {
                         fireEvent(new GameEvent(GameEvent.PAUSE));
                         return;

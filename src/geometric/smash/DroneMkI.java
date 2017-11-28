@@ -5,7 +5,6 @@
  */
 package geometric.smash;
 
-import geometric.smash.property.DoubleModifier;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.Parent;

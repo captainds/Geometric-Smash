@@ -5,7 +5,6 @@
  */
 package geometric.smash;
 
-import geometric.smash.property.Property;
 import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;

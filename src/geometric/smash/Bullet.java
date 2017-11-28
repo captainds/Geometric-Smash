@@ -5,7 +5,6 @@
  */
 package geometric.smash;
 
-import geometric.smash.property.Property;
 import static java.lang.Math.PI;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;

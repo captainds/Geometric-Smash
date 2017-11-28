@@ -5,8 +5,6 @@
  */
 package geometric.smash;
 
-import geometric.smash.property.DoubleModifier;
-import geometric.smash.property.Property;
 import java.util.Random;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
