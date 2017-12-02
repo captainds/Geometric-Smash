@@ -64,6 +64,28 @@ public class PropertyTest {
 
     }
 
+    @Test
+    public void test3GetValue() {
+        System.out.println("getValue");
+        Property<Integer> instance = new Property<>(10);
+        IntegerModifier.Adder adder = new IntegerModifier.Adder(8);
+        IntegerModifier.Adder adder1 = new IntegerModifier.Adder(2);
+        instance.addModifier(1, adder);
+        instance.addModifier(1, new IntegerModifier.Adder(3));
+        instance.addModifier(2, new IntegerModifier.Divider(3));
+        instance.addModifier(3, new IntegerModifier.Adder(2));
+        instance.removeModifier(adder);
+        instance.addModifier(0, new IntegerModifier.Multiplier(5));
+        instance.removeModifier(adder1);
+        
+        int expResult = (((10 * 5) + 3) / 3) + 2;
+        int result = instance.getValue();
+        
+        assertEquals(expResult, result);
+        System.out.format("expected: %d\n\tactual: %d\n", expResult, result);
+
+    }
+
     public static void main(String args[]) {
         org.junit.runner.JUnitCore.main("geometric.smash.property.PropertyTest");
     }

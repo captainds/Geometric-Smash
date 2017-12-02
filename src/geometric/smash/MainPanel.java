@@ -21,8 +21,16 @@ public class MainPanel extends StackPane {
     private final EventHandler<GameEvent> onStart;
     private final EventHandler<GameEvent> onPause;
     private final EventHandler<GameEvent> onEnd;
+    private final EventHandler<GameEvent> onNext;
+    private final int minPoints;
+    private final int maxPoints;
+
+    private int points;
 
     public MainPanel() {
+        this.minPoints = 23000;
+        this.maxPoints = 100000;
+        this.points = minPoints;
 
         this.setStyle("-fx-background-color: white");
         setFocusTraversable(true);
@@ -37,7 +45,8 @@ public class MainPanel extends StackPane {
         getChildren().add(menu);
 
         onStart = (GameEvent e) -> {
-            startGame();
+            InputMap.processInputs();
+            gameState = new GameState(points);
             getChildren().remove(menu);
             getChildren().add(gameState);
             gameState.setPaused(false);
@@ -58,18 +67,25 @@ public class MainPanel extends StackPane {
         onEnd = (GameEvent e) -> {
             getChildren().clear();
             getChildren().add(menu);
+            points = minPoints;
             e.consume();
-            InputMap.processInputs();
+        };
+
+        onNext = (GameEvent e) -> {
+            getChildren().clear();
+            gameState = new GameState(points);
+            getChildren().add(gameState);
+            points *= 1.15;
+            if (points > maxPoints) {
+                points = maxPoints;
+            }
+            onStart.handle(e);
         };
 
         setEventHandler(GameEvent.START, onStart);
         setEventHandler(GameEvent.PAUSE, onPause);
         setEventHandler(GameEvent.END, onEnd);
-    }
-
-    private void startGame() {
-        gameState = new GameState();
-
+        setEventHandler(GameEvent.NEXT, onNext);
     }
 
 }

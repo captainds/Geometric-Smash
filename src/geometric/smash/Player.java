@@ -5,6 +5,7 @@
  */
 package geometric.smash;
 
+import java.util.ArrayList;
 import java.util.Random;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
@@ -39,12 +40,20 @@ public class Player extends GameEntity {
             weapon = new SpreadShot(5, -60, 60);
             weapon.setBaseBurstValue(3);
             weapon.getBurstTime().setBaseValue(0.36);
-            weapon.getCooldown().setBaseValue(0.8);
+            weapon.getCooldown().setBaseValue(0.5);
+                ArrayList<BulletAttribute> attributes = weapon.getBulletAttributes();
+                for(BulletAttribute ba : attributes) {
+                    ba.getSpeed().setBaseValue(280.0);
+                }
         } else {
             weapon = new Peashooter();
             weapon.setBaseBurstValue(5);
             weapon.getBurstTime().setBaseValue(0.12);
-            weapon.getCooldown().setBaseValue(0.5);
+            weapon.getCooldown().setBaseValue(0.36);
+                ArrayList<BulletAttribute> attributes = weapon.getBulletAttributes();
+                for(BulletAttribute ba : attributes) {
+                    ba.getSpeed().setBaseValue(250.0);
+                }
         }
         
         weapon.setPlayerOwned(true);

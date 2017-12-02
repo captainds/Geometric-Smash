@@ -213,7 +213,7 @@
         </Method>
       </Methods>
     </Class>
-    <Class name="GameState" package="geometric.smash" visibility="public" xPosition="1234.0" yPosition="274.0">
+    <Class name="GameState" package="geometric.smash" visibility="public" xPosition="1234.0" yPosition="290.0">
       <Fields>
         <Field name="player" type="Player" visibility="private" isFinal="true"/>
         <Field name="gameEntities" type="ObservableList&lt;GameEntity&gt;" visibility="private"/>
@@ -221,7 +221,8 @@
         <Field name="toRemove" type="ArrayList&lt;GameEntity&gt;" visibility="private"/>
         <Field name="gameLoop" type="AnimationTimer" visibility="private" isFinal="true"/>
         <Field name="paused" type="boolean" visibility="private"/>
-        <Field name="rng" type="Random" visibility="package"/>
+        <Field name="rng" type="Random" visibility="private"/>
+        <Field name="enemyCount" type="int" visibility="private"/>
       </Fields>
       <Constructors>
         <Constructor visibility="public"/>
@@ -288,7 +289,7 @@
         <Method name="processInputs" returnType="void" visibility="public" isStatic="true"/>
       </Methods>
     </Class>
-    <Class name="MainMenu" package="geometric.smash" visibility="public" xPosition="1300.0" yPosition="10.0">
+    <Class name="MainMenu" package="geometric.smash" visibility="public" xPosition="1406.0" yPosition="1.0">
       <Fields>
         <Field name="startButton" type="Button" visibility="private" isFinal="true"/>
         <Field name="exitButton" type="Button" visibility="private" isFinal="true"/>
@@ -298,13 +299,17 @@
       </Constructors>
       <Methods/>
     </Class>
-    <Class name="MainPanel" package="geometric.smash" visibility="public" xPosition="821.0" yPosition="94.0">
+    <Class name="MainPanel" package="geometric.smash" visibility="public" xPosition="888.0" yPosition="36.0">
       <Fields>
         <Field name="menu" type="MainMenu" visibility="private" isFinal="true"/>
         <Field name="gameState" type="GameState" visibility="private"/>
         <Field name="onStart" type="EventHandler&lt;GameEvent&gt;" visibility="private" isFinal="true"/>
         <Field name="onPause" type="EventHandler&lt;GameEvent&gt;" visibility="private" isFinal="true"/>
         <Field name="onEnd" type="EventHandler&lt;GameEvent&gt;" visibility="private" isFinal="true"/>
+        <Field name="onNext" type="EventHandler&lt;GameEvent&gt;" visibility="private" isFinal="true"/>
+        <Field name="minPoints" type="int" visibility="private" isFinal="true"/>
+        <Field name="maxPoints" type="int" visibility="private" isFinal="true"/>
+        <Field name="points" type="int" visibility="private"/>
       </Fields>
       <Constructors>
         <Constructor visibility="public"/>
@@ -472,37 +477,37 @@
     </Interface>
   </ClassDiagramComponents>
   <ClassDiagramRelations>
-    <UseRelation source="geometric.smash.Weapon" target="geometric.smash.DoubleModifier" sourceCardinality="1..1" targetCardinality="1..1"/>
-    <HasRelation name="END" source="geometric.smash.GameEvent" target="geometric.smash.GameEvent" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
-    <IsRelation name="is" source="geometric.smash.DroneMkI" target="geometric.smash.Enemy"/>
-    <IsRelation name="is" source="geometric.smash.Gunner" target="geometric.smash.Enemy"/>
-    <IsRelation name="is" source="geometric.smash.Bullet" target="geometric.smash.GameEntity"/>
     <HasRelation name="REMOVE" source="geometric.smash.GameEvent" target="geometric.smash.GameEvent" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
-    <IsRelation name="is" source="geometric.smash.Enemy" target="geometric.smash.GameEntity"/>
-    <IsRelation name="is" source="geometric.smash.Player" target="geometric.smash.GameEntity"/>
-    <HasRelation name="onEnd" source="geometric.smash.MainPanel" target="geometric.smash.GameEvent" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
-    <HasRelation name="gameState" source="geometric.smash.MainPanel" target="geometric.smash.GameState" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
-    <HasRelation name="primaryWeapons" source="geometric.smash.Enemy" target="geometric.smash.Weapon" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="ArrayList&lt;Weapon&gt;"/>
-    <HasRelation name="behavior" source="geometric.smash.Enemy" target="geometric.smash.EnemyBehavior" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="geometric.smash.Weapon" target="geometric.smash.Property" sourceCardinality="1..1" targetCardinality="1..1"/>
     <IsRelation name="is" source="geometric.smash.Peashooter" target="geometric.smash.Weapon"/>
-    <HasRelation name="player" source="geometric.smash.GameState" target="geometric.smash.Player" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
-    <UseRelation source="geometric.smash.Enemy" target="geometric.smash.Property" sourceCardinality="1..1" targetCardinality="1..1"/>
-    <HasRelation name="menu" source="geometric.smash.MainPanel" target="geometric.smash.MainMenu" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
-    <HasRelation name="weapon" source="geometric.smash.Player" target="geometric.smash.Weapon" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
-    <IsRelation name="is" source="geometric.smash.DroneMkII" target="geometric.smash.DroneMkI"/>
+    <HasRelation name="stores" source="geometric.smash.GameState" target="geometric.smash.GameEntity" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="ObservableList&lt;GameEntity&gt;"/>
+    <IsRelation name="is" source="geometric.smash.Gunner" target="geometric.smash.Enemy"/>
     <HasRelation name="PAUSE" source="geometric.smash.GameEvent" target="geometric.smash.GameEvent" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
     <HasRelation name="entity" source="geometric.smash.GameEvent" target="geometric.smash.GameEntity" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
-    <HasRelation name="onPause" source="geometric.smash.MainPanel" target="geometric.smash.GameEvent" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
-    <UseRelation source="geometric.smash.Weapon" target="geometric.smash.Bullet" sourceCardinality="1..1" targetCardinality="1..1"/>
-    <IsRelation name="is" source="geometric.smash.Weapon" target="geometric.smash.GameEntity"/>
-    <HasRelation name="onStart" source="geometric.smash.MainPanel" target="geometric.smash.GameEvent" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
-    <UseRelation source="geometric.smash.BulletAttribute" target="geometric.smash.Property" sourceCardinality="1..1" targetCardinality="1..1"/>
-    <UseRelation source="geometric.smash.Weapon" target="geometric.smash.Property" sourceCardinality="1..1" targetCardinality="1..1"/>
-    <IsRelation name="is" source="geometric.smash.SpreadShot" target="geometric.smash.Weapon"/>
-    <HasRelation name="START" source="geometric.smash.GameEvent" target="geometric.smash.GameEvent" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
-    <HasRelation name="stores" source="geometric.smash.GameState" target="geometric.smash.GameEntity" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="ObservableList&lt;GameEntity&gt;"/>
-    <HasRelation name="bulletAttributes" source="geometric.smash.Weapon" target="geometric.smash.BulletAttribute" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="ArrayList&lt;BulletAttribute&gt;"/>
     <HasRelation name="player" source="geometric.smash.Enemy" target="geometric.smash.Player" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <IsRelation name="is" source="geometric.smash.Weapon" target="geometric.smash.GameEntity"/>
+    <UseRelation source="geometric.smash.Weapon" target="geometric.smash.Bullet" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="weapon" source="geometric.smash.Player" target="geometric.smash.Weapon" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="onEnd" source="geometric.smash.MainPanel" target="geometric.smash.GameEvent" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="gameState" source="geometric.smash.MainPanel" target="geometric.smash.GameState" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="geometric.smash.BulletAttribute" target="geometric.smash.Property" sourceCardinality="1..1" targetCardinality="1..1"/>
     <HasRelation name="ADD" source="geometric.smash.GameEvent" target="geometric.smash.GameEvent" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="player" source="geometric.smash.GameState" target="geometric.smash.Player" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <IsRelation name="is" source="geometric.smash.Bullet" target="geometric.smash.GameEntity"/>
+    <HasRelation name="primaryWeapons" source="geometric.smash.Enemy" target="geometric.smash.Weapon" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="ArrayList&lt;Weapon&gt;"/>
+    <HasRelation name="menu" source="geometric.smash.MainPanel" target="geometric.smash.MainMenu" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="START" source="geometric.smash.GameEvent" target="geometric.smash.GameEvent" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <IsRelation name="is" source="geometric.smash.SpreadShot" target="geometric.smash.Weapon"/>
+    <HasRelation name="END" source="geometric.smash.GameEvent" target="geometric.smash.GameEvent" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="onStart" source="geometric.smash.MainPanel" target="geometric.smash.GameEvent" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="onPause" source="geometric.smash.MainPanel" target="geometric.smash.GameEvent" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="geometric.smash.Enemy" target="geometric.smash.Property" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <IsRelation name="is" source="geometric.smash.DroneMkII" target="geometric.smash.DroneMkI"/>
+    <HasRelation name="behavior" source="geometric.smash.Enemy" target="geometric.smash.EnemyBehavior" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <IsRelation name="is" source="geometric.smash.Enemy" target="geometric.smash.GameEntity"/>
+    <HasRelation name="bulletAttributes" source="geometric.smash.Weapon" target="geometric.smash.BulletAttribute" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="ArrayList&lt;BulletAttribute&gt;"/>
+    <IsRelation name="is" source="geometric.smash.DroneMkI" target="geometric.smash.Enemy"/>
+    <IsRelation name="is" source="geometric.smash.Player" target="geometric.smash.GameEntity"/>
+    <UseRelation source="geometric.smash.Weapon" target="geometric.smash.DoubleModifier" sourceCardinality="1..1" targetCardinality="1..1"/>
   </ClassDiagramRelations>
 </ClassDiagram>

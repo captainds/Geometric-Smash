@@ -47,6 +47,7 @@ public class DroneMkI extends Enemy {
         colliders.add(mainBody);
         setBehavior(wanderBehavior);
         mainBody.setFill(Color.GREEN);
+        setHealth(2);
 
     }
 

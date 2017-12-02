@@ -33,8 +33,8 @@ public class Gunner extends Enemy {
         sideParts[3] = new Circle(0, 25, 25);
         this.mainBody = new Rectangle(-30, -30, 60, 60);
         speed.setBaseValue(50.0);
-        getPointValue().setBaseValue(1000);
-        getSpawnCost().setBaseValue(800.0);
+        getPointValue().setBaseValue(800);
+        getSpawnCost().setBaseValue(900.0);
         for (Shape s : sideParts) {
             s.setStroke(Color.GREEN);
             s.setFill(Color.DARKRED);
@@ -47,6 +47,7 @@ public class Gunner extends Enemy {
         setPrimaryMax(new Random().nextInt(3) + 1);
         setSecondaryMax(4);
         setBehavior(wander);
+        setHealth(30);
 
     }
 
@@ -71,7 +72,7 @@ public class Gunner extends Enemy {
         protected int currentSec = 0;
         protected int currentCycle = 0;
         protected int maxCycles = 2;
-        protected double waitTimer = 0.08;
+        protected double waitTimer = 1.5;
         protected boolean initial = true;
         protected boolean waiting = false;
         Point2D fireDir = new Point2D(1.0, 0.0);
@@ -137,8 +138,8 @@ public class Gunner extends Enemy {
         protected int currentSec = 0;
         protected int currentCycle = 0;
         protected int maxCycles = 3;
-        protected double swapTime = 3.0;
-        protected double waitTimer = 1.0;
+        protected double swapTime = 1.0;
+        protected double waitTimer = 0.15;
         protected boolean initial = true;
         protected boolean waiting = false;
         Point2D fireDir = new Point2D(1.0, 0.0);

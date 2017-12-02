@@ -37,6 +37,8 @@ public abstract class Enemy extends GameEntity {
     private int primaryMax = 0, secondaryMax = 0;
 
     private final ArrayList<Weapon> primaryWeapons = new ArrayList<>(), secondaryWeapons = new ArrayList<>();
+    
+    private int health;
 
     @Override
     public void preUpdate(double dt) {
@@ -137,6 +139,20 @@ public abstract class Enemy extends GameEntity {
      */
     public int getSecondaryMax() {
         return secondaryMax;
+    }
+
+    /**
+     * @return the health
+     */
+    public int getHealth() {
+        return health;
+    }
+
+    /**
+     * @param health the health to set
+     */
+    public void setHealth(int health) {
+        this.health = health;
     }
 
 }

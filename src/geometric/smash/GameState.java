@@ -23,16 +23,17 @@ import javafx.scene.shape.Shape;
  * @author Corithian
  */
 public class GameState extends Pane {
-    
+
     private final Player player;
     private ObservableList<GameEntity> gameEntities;
     private ArrayList<GameEntity> toAdd;
     private ArrayList<GameEntity> toRemove;
     private final AnimationTimer gameLoop;
     private boolean paused;
-    Random rng = new Random();
-    
-    public GameState() {
+    private Random rng = new Random();
+    private int enemyCount = 0;
+
+    public GameState(int points) {
         this.setStyle("-fx-background-color: black");
         setMinSize(800, 600);
         setPrefSize(800, 600);
@@ -51,7 +52,7 @@ public class GameState extends Pane {
         addEntity(player);
         player.setTranslateX(400);
         player.setTranslateY(400);
-        
+
         setFocusTraversable(true);
         requestFocus();
         addEventHandler(KeyEvent.KEY_PRESSED, InputMap.getHandler());
@@ -62,35 +63,40 @@ public class GameState extends Pane {
         addEventHandler(GameEvent.REMOVE, (GameEvent e) -> {
             removeEntity(e.getEntity());
         });
-        
-        ArrayList<Enemy> enemies = generateEnemies(rng.nextInt(30000) + 10000);
+
+        ArrayList<Enemy> enemies = generateEnemies(points);
+        enemyCount = enemies.size();
         for (Enemy enemy : enemies) {
             enemy.setPlayer(player);
             enemy.setTranslateX(rng.nextBoolean() ? rng.nextInt(300) : rng.nextInt(200) + 450);
             enemy.setTranslateY(rng.nextBoolean() ? rng.nextInt(300) : rng.nextInt(200) + 450);
             addEntity(enemy);
         }
-        
+
         gameLoop = new AnimationTimer() {
             boolean running = true;
             double fps = 60.0;
             double dt = 1 / fps;
             double dtNano = 1e9 * dt; //dt in nano seconds
             double startTime = System.nanoTime();
-            
+
             @Override
             public void start() {
                 startTime = System.nanoTime();
                 super.start();
             }
-            
+
             @Override
             public void handle(long curTime) {
                 double cT = curTime;
                 InputMap.processInputs();
+                if (InputMap.isReleased(KeyCode.P)) {
+                    fireEvent(new GameEvent(GameEvent.PAUSE));
+                    return;
+                }
                 while (cT - startTime > dtNano) {
                     startTime += dtNano;
-                    
+
                     gameEntities.forEach((GameEntity entity) -> {
                         entity.update(dt);
                         if (entity instanceof Enemy) {
@@ -102,6 +108,7 @@ public class GameState extends Pane {
                                         Shape check = Shape.intersect(col1, col2);
                                         Bounds coll = check.getBoundsInLocal();
                                         if (coll.getWidth() > 0 && coll.getHeight() > 0) {
+                                            stop();
                                             fireEvent(new GameEvent(GameEvent.END));
                                         }
                                     }
@@ -109,7 +116,7 @@ public class GameState extends Pane {
                             }
                         } else if (entity instanceof Bullet) {
                             Bullet bullet = (Bullet) entity;
-                            
+
                             Bounds bBounds = bullet.getBoundsInParent();
                             if (bullet.isPlayerOwned()) {
                                 collisions:
@@ -122,8 +129,20 @@ public class GameState extends Pane {
                                                     Shape check = Shape.intersect(col1, col2);
                                                     Bounds coll = check.getBoundsInLocal();
                                                     if (coll.getWidth() > 0 && coll.getHeight() > 0) {
-                                                        removeEntity(e);
                                                         removeEntity(bullet);
+                                                        Enemy eCast = (Enemy) e;
+                                                        eCast.setHealth(eCast.getHealth() - 1);
+                                                        if (eCast.getHealth() <= 0) {
+                                                            
+                                                            removeEntity(e);
+                                                            enemyCount--;
+                                                            System.out.println(enemyCount);
+                                                            if (enemyCount == 0) {
+                                                                stop();
+                                                                fireEvent(new GameEvent(GameEvent.NEXT));
+                                                            }
+                                                        }
+
                                                         break collisions;
                                                     }
                                                 }
@@ -144,29 +163,25 @@ public class GameState extends Pane {
                                             }
                                         }
                                     }
-                                    
+
                                 }
                             }
                         }
-                        
+
                     });
                     gameEntities.removeAll(toRemove);
                     gameEntities.addAll(toAdd);
                     toAdd.clear();
                     toRemove.clear();
-                    if (InputMap.isReleased(KeyCode.P)) {
-                        fireEvent(new GameEvent(GameEvent.PAUSE));
-                        return;
-                    }
                 }
             }
         };
     }
-    
+
     public void setPaused(boolean paused) {
         if (this.paused == paused) {
             return;
-            
+
         }
         if (paused) {
             gameLoop.stop();
@@ -175,43 +190,44 @@ public class GameState extends Pane {
         }
         this.paused = paused;
     }
-    
+
     public boolean isPaused() {
         return paused;
     }
-    
+
     private void addEntity(GameEntity e) {
         e.setGameState(this);
         toAdd.add(e);
     }
-    
+
     private void removeEntity(GameEntity e) {
         toRemove.add(e);
     }
-    
-    public ArrayList<Enemy> generateEnemies(int pointSug) {
+
+    private ArrayList<Enemy> generateEnemies(int pointSug) {
         ArrayList<Enemy> enemies = new ArrayList<>();
         ArrayList<Integer> pointSuggestions = new ArrayList<>();
         boolean qualOverQuant = rng.nextBoolean();
-        int enemyMax = rng.nextInt(4) + 4;
+        int enemyMax = rng.nextInt(5) + 5;
         int pointMin = Math.max(pointSug / enemyMax, 100);
         if (!qualOverQuant) {
-            
+
             enemyMax *= (1.75 + rng.nextDouble());
+            pointSug /= 1.25;
         }
         for (int i = 0; i < enemyMax; i++) {
-            
+
             Enemy e = generateEnemy(Math.max(200, pointSug));
             pointSug -= e.getSpawnCost().getValue();
             enemies.add(e);
-            
+
         }
         return enemies;
     }
-    
+
     private Enemy generateEnemy(int suggestedPoints) {
         Enemy enemy = null;
-        if (suggestedPoints > 25000) {
+        if (suggestedPoints > 22000) {
             enemy = new Gunner();
         } else if (suggestedPoints > 14000) {
             enemy = new DroneMkII();
@@ -224,6 +240,11 @@ public class GameState extends Pane {
                 w = new Peashooter();
                 w.setBaseBurstValue(rng.nextInt(4) + 3);
                 w.getCooldown().setBaseValue(0.5);
+                ArrayList<BulletAttribute> attributes = w.getBulletAttributes();
+                double spd = 100.0 + rng.nextDouble() * 80.0;
+                for(BulletAttribute ba : attributes) {
+                    ba.getSpeed().setBaseValue(spd);
+                }
             } else {
                 double angle1 = rng.nextDouble() * -135.0, angle2 = rng.nextDouble() * 135.0;
                 if (angle1 >= angle2) {
@@ -237,6 +258,11 @@ public class GameState extends Pane {
                 w = new SpreadShot(3 + rng.nextInt(9), angle1, angle2);
                 w.setBaseBurstValue(rng.nextInt(3) + 1);
                 w.getCooldown().setBaseValue(1.0);
+                ArrayList<BulletAttribute> attributes = w.getBulletAttributes();
+                double spd = 70.0 + rng.nextDouble() * 70.0;
+                for(BulletAttribute ba : attributes) {
+                    ba.getSpeed().setBaseValue(spd);
+                }
             }
             enemy.getSpawnCost().addModifier(0, w.getCostMultiplier());
             enemy.addPrimaryWeapon(w);
@@ -264,7 +290,7 @@ public class GameState extends Pane {
                     w.getCooldown().setBaseValue(1.0);
                 }
                 enemy.getSpawnCost().addModifier(0, w.getCostMultiplier());
-                
+
                 enemy.addSecondaryWeapon(w);
             }
         }

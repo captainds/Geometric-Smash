@@ -32,11 +32,13 @@ public class PauseState extends BorderPane {
             public void handle(long l) {
                 InputMap.processInputs();
                 if (InputMap.isReleased(KeyCode.ESCAPE)) {
+                    stop();
+
                     fireEvent(new GameEvent(GameEvent.END));
 
                 } else if (InputMap.isReleased(KeyCode.P)) {
-                    fireEvent(new GameEvent(GameEvent.PAUSE));
                     stop();
+                    fireEvent(new GameEvent(GameEvent.PAUSE));
                 }
             }
 

@@ -7,6 +7,7 @@ package geometric.smash;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Random;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.Parent;
@@ -33,7 +34,8 @@ public class DroneMkII extends DroneMkI {
         shapes.add(rectangle);
         speed.setBaseValue(40.0);
         setPrimaryMax(1);
-        setSecondaryMax((int) (Math.random() + 0.5));
+        setSecondaryMax(new Random().nextInt(2));
+        setHealth(5);
     }
 
     @Override
@@ -147,6 +149,10 @@ public class DroneMkII extends DroneMkI {
         super.preUpdate(dt);
         if (getPrimaryWeapons().size() > 0) {
             Weapon weapon = getPrimaryWeapons().get(0);
+            weapon.update(dt);
+        }
+        if (getSecondaryWeapons().size() > 0) {
+            Weapon weapon = getSecondaryWeapons().get(0);
             weapon.update(dt);
         }
     }

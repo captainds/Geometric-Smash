@@ -30,7 +30,6 @@ public class InputMap {
         ke.consume();
         //System.out.println(ke);
         INPUTS.put(ke.getCode(), ke.getEventType());
-
     };
 
     public static boolean isPressed(KeyCode kc) {
@@ -82,5 +81,5 @@ public class InputMap {
 
         }
     }
-
+    
 }
